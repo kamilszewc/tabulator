@@ -31,9 +31,20 @@ public class TabulatorTest {
                 .second("test")
                 .build();
 
-        Tabulator tabulator = new Tabulator(basic);
-        System.out.println(tabulator.getTable());
-        System.out.println(tabulator.getJson());
+        Tabulator tabulatorOne = new Tabulator(basic);
+        System.out.println(tabulatorOne.getTable());
+        System.out.println(tabulatorOne.getJson());
+
+        Tabulator tabulatorTwo = Tabulator.builder()
+                .object(basic)
+                .build();
+        System.out.println(tabulatorTwo.getTable());
+        System.out.println(tabulatorTwo.getJson());
+
+        String table = Tabulator.builder()
+                .object(basic)
+                .getTable();
+        System.out.println(table);
 
         Assertions.assertEquals(1, 1);
     }

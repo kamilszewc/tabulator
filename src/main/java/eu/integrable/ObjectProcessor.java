@@ -27,7 +27,12 @@ public class ObjectProcessor {
                 StringBuilder sb = new StringBuilder(name);
                 sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
                 name = sb.toString();
-                map.put(name, method.invoke(object).toString());
+                Object result = method.invoke(object);
+                if (result != null) {
+                    map.put(name, method.invoke(object).toString());
+                } else {
+                    map.put(name, "");
+                }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {

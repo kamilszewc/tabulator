@@ -6,9 +6,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.Locale;
 
-public class TabulatorTest {
+public class CardTest {
 
     @Getter
     @Setter
@@ -21,29 +20,23 @@ public class TabulatorTest {
         private String second;
         @Builder.Default
         private LocalDateTime time = LocalDateTime.now();
+        private String thirdOption;
+        private String forthOption;
     }
 
     @Test
-    public void convertingBasicClassToTable() throws JsonProcessingException {
+    public void convertingBasicClassToCard() {
 
         Basic basic = Basic.builder()
                 .first(1L)
                 .second("test")
+                .thirdOption("Nie rozumiem tego")
                 .build();
 
-        Tabulator tabulatorOne = new Tabulator(basic);
-        System.out.println(tabulatorOne.getTable());
-        System.out.println(tabulatorOne.getJson());
-
-        Tabulator tabulatorTwo = Tabulator.builder()
+        String table = Card.builder()
                 .object(basic)
-                .build();
-        System.out.println(tabulatorTwo.getTable());
-        System.out.println(tabulatorTwo.getJson());
-
-        String table = Tabulator.builder()
-                .object(basic)
-                .getTable();
+                .header("Basic class xxx to ciekawe i nie rozu")
+                .getCard();
         System.out.println(table);
 
         Assertions.assertEquals(1, 1);

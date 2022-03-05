@@ -17,6 +17,34 @@ public class ObjectProcessor {
                 .collect(Collectors.toUnmodifiableList());
     }
 
+    public static List<String> getListOfKeys(Object object) {
+        return getAllGetMethods(object.getClass()).stream()
+                .map(method -> {
+                    String name = method.getName().replaceFirst("get", "");
+                    StringBuilder sb = new StringBuilder(name);
+                    sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
+                    return sb.toString();
+                })
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    public static List<String> getListOfValues(Object object) {
+        return getAllGetMethods(object.getClass()).stream()
+                .map(method -> {
+                    try {
+                        Object result = method.invoke(object);
+                        if (result != null) {
+                            return method.invoke(object).toString();
+                        } else {
+                            return "";
+                        }
+                    } catch (Exception ex) {
+                        return "";
+                    }
+                })
+                .collect(Collectors.toUnmodifiableList());
+    }
+
     public static Map<String, String> getMapOfMethodNameAndValue(Object object) {
         Map<String, String> map = new LinkedHashMap<>();
 

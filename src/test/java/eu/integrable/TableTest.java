@@ -30,21 +30,21 @@ public class TableTest {
 
         Basic basicOne = Basic.builder()
                 .first(1L)
-                .second("test")
-                .thirdOption("Third option")
+                .second("Second entry")
+                .thirdOption("Third Option")
                 .build();
 
         Basic basicTwo = Basic.builder()
                 .first(2L)
-                .second("test")
-                .thirdOption("Nie rozumiem tego 2")
+                .second("Second entry")
+                .thirdOption("Third Option")
                 .build();
 
         List<Object> basics = List.of(basicOne, basicTwo);
 
         String table = Table.builder()
                 .object(basics)
-                .header("Basic class xxx to ciekawe i nie rozu")
+                .header("Basic class")
                 .getTable();
         System.out.println(table);
 

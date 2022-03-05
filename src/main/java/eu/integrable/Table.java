@@ -16,16 +16,16 @@ import java.util.List;
 @AllArgsConstructor
 @Setter
 @Getter
-public class Table {
+public class Table<T> {
 
-    private Collection<Object> object;
+    private Collection<T> object;
 
     @Builder.Default
     private int maxColumnWidth = 30;
 
     String header;
 
-    public Table(List<Object> object) {
+    public Table(List<T> object) {
         this.object = object;
     }
 
@@ -36,6 +36,12 @@ public class Table {
     }
 
     public String getTable() {
+
+        for (Object object : this.object) {
+            var keys = ObjectProcessor.getListOfKeys(object);
+
+            System.out.println(keys);
+        }
 //        var map = ObjectProcessor.getMapOfMethodNameAndValue(object);
 //
 //        int maxKeyLength = map.keySet().stream()
@@ -87,7 +93,7 @@ public class Table {
         return "will be developed soon";
     }
 
-    public static class TableBuilder {
+    public static class TableBuilder<T> {
 
         public String getJson() throws JsonProcessingException {
             return build().getJson();

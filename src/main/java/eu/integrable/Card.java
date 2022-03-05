@@ -2,12 +2,15 @@ package eu.integrable;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.integrable.exceptions.TooLongWordException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 
 @Builder
@@ -33,7 +36,7 @@ public class Card {
         return objectMapper.writeValueAsString(object);
     }
 
-    public String getTable() {
+    public String getCard() throws TooLongWordException {
         var map = ObjectProcessor.getMapOfMethodNameAndValue(object);
 
         int maxKeyLength = map.keySet().stream()
@@ -54,13 +57,14 @@ public class Card {
 
         String header = "";
         if (this.header != null) {
-            int position = width / 2 - this.header.length() / 2 - 1;
+            // The top separation line
             header += "+" + "-".repeat(width-2) + "+\n";
-            header += "|";
-            header += " ".repeat(position);
-            header += this.header;
-            header += " ".repeat(width - position - this.header.length() - 2);
-            header += "|\n";
+
+            // Actual header
+            List<String> headerRows = getHeaderRows(this.header, width);
+            for (String row : headerRows) {
+                header += row;
+            }
         }
         header += "+" + "-".repeat(keyColumnWidth) + "+" + "-".repeat(valueColumnWidth) + "+\n";
         String footer = "+" + "-".repeat(keyColumnWidth) + "+" + "-".repeat(valueColumnWidth) + "+\n";
@@ -84,14 +88,62 @@ public class Card {
         return header + body + footer;
     }
 
+    private static List<String> getStringRows(String text, int width) throws TooLongWordException {
+
+        // Get maximal width of string in row
+        int maxStringLength = width - 3;
+
+        // Get array of words
+        String[] words = text.split(" ");
+
+        // Construct rows
+        List<String> rows = new ArrayList<>() {{{
+            add("");
+        }}};
+
+        for (String word : words) {
+            if (rows.get(rows.size()-1).length() + word.length() + 2 > maxStringLength) {
+                rows.add("");
+            }
+
+            // Rise exception if the word in header is too long
+            if (word.length() + 2 > maxStringLength) {
+                throw new TooLongWordException("Word " + word + " is too long for requested structure");
+            }
+
+            rows.set(rows.size()-1, rows.get(rows.size()-1) + " " + word);
+        }
+
+        return rows;
+    }
+
+    private static List<String> getHeaderRows(String header, int width) throws TooLongWordException {
+
+        List<String> rows = getStringRows(header, width);
+
+        List<String> headerRows = new ArrayList<>();
+        for (String row : rows) {
+            int position = width / 2 - row.length() / 2 - 1;
+            String line = "";
+            line += "|";
+            line += " ".repeat(position);
+            line += row;
+            line += " ".repeat(width - position - row.length() - 2);
+            line += "|\n";
+            headerRows.add(line);
+        }
+
+        return headerRows;
+    }
+
     public static class CardBuilder {
 
         public String getJson() throws JsonProcessingException {
             return build().getJson();
         }
 
-        public String getCard() {
-            return build().getTable();
+        public String getCard() throws TooLongWordException {
+            return build().getCard();
         }
     }
 

@@ -1,11 +1,12 @@
 package eu.integrable;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import eu.integrable.exceptions.TooLongWordException;
 import lombok.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 
 public class CardTest {
 
@@ -19,26 +20,87 @@ public class CardTest {
         private Long first;
         private String second;
         @Builder.Default
-        private LocalDateTime time = LocalDateTime.now();
+        private LocalDateTime time = LocalDateTime.of(2022, Month.AUGUST, 10, 11, 12, 12);
         private String thirdOption;
-        private String forthOption;
+        private String fourthOption;
     }
 
     @Test
-    public void convertingBasicClassToCard() {
+    public void convertingBasicClassToCard() throws TooLongWordException {
 
         Basic basic = Basic.builder()
                 .first(1L)
-                .second("test")
-                .thirdOption("Nie rozumiem tego")
+                .second("Second entry")
+                .thirdOption("Third Option")
                 .build();
 
-        String table = Card.builder()
+        String card = Card.builder()
                 .object(basic)
-                .header("Basic class xxx to ciekawe i nie rozu")
+                .header("Basic class")
                 .getCard();
-        System.out.println(table);
 
-        Assertions.assertEquals(1, 1);
+        String expected = """
+                +------------------------------------+
+                |             Basic class            |
+                +--------------+---------------------+
+                | first        | 1                   |
+                | fourthOption |                     |
+                | second       | Second entry        |
+                | thirdOption  | Third Option        |
+                | time         | 2022-08-10T11:12:12 |
+                +--------------+---------------------+
+                """;
+
+        Assertions.assertEquals(expected, card);
+    }
+
+    @Test
+    public void convertingBasicClassToCardWithTooLongHeader() throws TooLongWordException {
+
+        Basic basic = Basic.builder()
+                .first(1L)
+                .second("Second entry")
+                .thirdOption("Third Option")
+                .build();
+
+        String card = Card.builder()
+                .object(basic)
+                .header("This is very long header that does not fit in one raw")
+                .getCard();
+
+        String expected = """
+                +------------------------------------+
+                |    This is very long header that   |
+                |       does not fit in one raw      |
+                +--------------+---------------------+
+                | first        | 1                   |
+                | fourthOption |                     |
+                | second       | Second entry        |
+                | thirdOption  | Third Option        |
+                | time         | 2022-08-10T11:12:12 |
+                +--------------+---------------------+
+                """;
+
+        Assertions.assertEquals(expected, card);
+    }
+
+
+    @Test
+    public void convertingBasicClassToCardWithTooLongOneWordHeader() {
+
+        Basic basic = Basic.builder()
+                .first(1L)
+                .second("Second entry")
+                .thirdOption("Third Option")
+                .build();
+
+        Exception exception = Assertions.assertThrows(TooLongWordException.class, () -> {
+            String card = Card.builder()
+                    .object(basic)
+                    .header("ThisIsVeryLongHeaderThatDoesNotFitInOneRaw")
+                    .getCard();
+        });
+
+        Assertions.assertEquals(exception.getMessage(), "Word ThisIsVeryLongHeaderThatDoesNotFitInOneRaw is too long for requested structure");
     }
 }

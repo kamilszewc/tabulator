@@ -31,7 +31,7 @@ public class TableTest {
         Basic basicOne = Basic.builder()
                 .first(1L)
                 .second("test")
-                .thirdOption("Nie rozumiem tego 1")
+                .thirdOption("Third option")
                 .build();
 
         Basic basicTwo = Basic.builder()

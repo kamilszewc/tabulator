@@ -27,7 +27,7 @@ public class General {
 
             // Rise exception if the word in header is too long
             if (word.length() + 2 > maxStringLength) {
-                throw new TooLongWordException("Word " + word + " is too long for headerś");
+                throw new TooLongWordException("Word " + word + " is too long for header");
             }
 
             rows.set(rows.size()-1, rows.get(rows.size()-1) + " " + word);
@@ -53,5 +53,16 @@ public class General {
         }
 
         return headerRows;
+    }
+
+    // Returns line like this: +--------+-------+------+
+    static String getSeparationLine(List<Integer> columnWidths) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Integer width : columnWidths) {
+            stringBuilder.append("+");
+            stringBuilder.append("-".repeat(width));
+        }
+        stringBuilder.append("+\n");
+        return stringBuilder.toString();
     }
 }

@@ -3,6 +3,7 @@ package eu.integrable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import eu.integrable.exceptions.NotImplementedException;
 import eu.integrable.exceptions.TabulatorException;
+import eu.integrable.exceptions.TooLongElementException;
 import eu.integrable.exceptions.TooLongWordException;
 import lombok.*;
 import org.junit.jupiter.api.Assertions;
@@ -121,7 +122,7 @@ public class TableTest {
 
         List<Object> basics = List.of(basicOne, basicTwo);
 
-        Exception exception = Assertions.assertThrows(TooLongWordException.class, () -> {
+        Exception exception = Assertions.assertThrows(TooLongElementException.class, () -> {
                     String table = Table.builder()
                             .object(basics)
                             .maxColumnWidth(10)
@@ -129,7 +130,7 @@ public class TableTest {
                             .getTable();
                 });
 
-        Assertions.assertEquals(exception.getMessage(), "Word forthOption is too long for table entry -> use multiLine=true");
+        Assertions.assertEquals(exception.getMessage(), "Element 'forthOption' is too long for table entry -> use multiLine=true");
     }
 
     @Test
@@ -144,14 +145,14 @@ public class TableTest {
         Basic basicTwo = Basic.builder()
                 .first(2L)
                 .second("Second entry")
-                .thirdOption("Third Option")
+                .thirdOption("Third Option that is too long")
                 .build();
 
         List<Object> basics = List.of(basicOne, basicTwo);
 
         String table = Table.builder()
                 .object(basics)
-                .maxColumnWidth(10)
+                .maxColumnWidth(20)
                 .multiLine(true)
                 .header("Basic class with too long header -> I need more and more and more and more and more text here")
                 .getTable();

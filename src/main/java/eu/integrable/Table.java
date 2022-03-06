@@ -3,6 +3,7 @@ package eu.integrable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.integrable.exceptions.NotImplementedException;
+import eu.integrable.exceptions.TooLongElementException;
 import eu.integrable.exceptions.TooLongWordException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static eu.integrable.General.getHeaderRows;
+import static eu.integrable.General.*;
 
 
 @Builder
@@ -44,7 +45,7 @@ public class Table<T> {
         return objectMapper.writeValueAsString(object);
     }
 
-    public String getTable() throws TooLongWordException, NotImplementedException {
+    public String getTable() throws TooLongElementException, TooLongWordException, NotImplementedException {
 
         List<List<String>> columns = new ArrayList<>();
 
@@ -95,8 +96,11 @@ public class Table<T> {
         }
         header += getSeparationLine(columnWidths);
 
+        // Create body
+        // Keys
         String body = getLine(keys, columnWidths);
         body += getSeparationLine(columnWidths);
+        // Values
         for (T object : this.object) {
             var values = ObjectProcessor.getListOfValues(object);
             body += getLine(values, columnWidths);
@@ -106,9 +110,12 @@ public class Table<T> {
         return header + body;
     }
 
-    private String getLine(List<String> elements, List<Integer> columnWidths) throws NotImplementedException, TooLongWordException {
+    private String getLine(List<String> elements, List<Integer> columnWidths) throws NotImplementedException, TooLongElementException, TooLongWordException {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("| ");
+
+        int numberOfRows = 1;
+
         for (int i=0; i<elements.size(); i++) {
             String value = elements.get(i).trim();
             stringBuilder.append(value);
@@ -117,28 +124,23 @@ public class Table<T> {
             // if number of empties is negative -> we need to no fit in max width
             if (numberOfEmpties < 0) {
                 if (multiLine == true) {
-                    throw new NotImplementedException("Multi line is not implemented yet");
-                } else {
-                    throw new TooLongWordException("Word " + value + " is too long for table entry -> use multiLine=true");
-                }
-            }
+                    //throw new NotImplementedException("Multi line is not implemented yet");
+                    List<String> stringRows = getStringRows(value, maxColumnWidth);
+                    System.out.println(stringRows);
+                    // TODO
 
-            stringBuilder.append(" ".repeat(numberOfEmpties));
-            if (i < elements.size()-1) stringBuilder.append(" | ");
+                } else {
+                    throw new TooLongElementException("Element '" + value + "' is too long for table entry -> use multiLine=true");
+                }
+            } else {
+                stringBuilder.append(" ".repeat(numberOfEmpties));
+                if (i < elements.size()-1) stringBuilder.append(" | ");
+            }
         }
         stringBuilder.append(" |\n");
         return stringBuilder.toString();
     }
 
-    private static String getSeparationLine(List<Integer> columnWidths) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Integer width : columnWidths) {
-            stringBuilder.append("+");
-            stringBuilder.append("-".repeat(width));
-        }
-        stringBuilder.append("+\n");
-        return stringBuilder.toString();
-    }
 
     public static class TableBuilder<T> {
 
@@ -146,7 +148,7 @@ public class Table<T> {
             return build().getJson();
         }
 
-        public String getTable() throws TooLongWordException, NotImplementedException {
+        public String getTable() throws TooLongWordException, NotImplementedException, TooLongElementException {
             return build().getTable();
         }
     }

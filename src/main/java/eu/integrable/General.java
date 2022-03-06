@@ -27,7 +27,7 @@ public class General {
 
             // Rise exception if the word in header is too long
             if (word.length() + 2 > maxStringLength) {
-                throw new TooLongWordException("Word " + word + " is too long for header");
+                throw new TooLongWordException("Word " + word + " is too long -> consider increasing maxColumnWidth");
             }
 
             rows.set(rows.size()-1, rows.get(rows.size()-1) + " " + word);
@@ -65,4 +65,5 @@ public class General {
         stringBuilder.append("+\n");
         return stringBuilder.toString();
     }
+
 }

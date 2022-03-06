@@ -1,9 +1,6 @@
 package eu.integrable;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import eu.integrable.exceptions.NotImplementedException;
 import eu.integrable.exceptions.TabulatorException;
-import eu.integrable.exceptions.TooLongElementException;
 import eu.integrable.exceptions.TooLongWordException;
 import lombok.*;
 import org.junit.jupiter.api.Assertions;
@@ -122,7 +119,7 @@ public class TableTest {
 
         List<Object> basics = List.of(basicOne, basicTwo);
 
-        Exception exception = Assertions.assertThrows(TooLongElementException.class, () -> {
+        Exception exception = Assertions.assertThrows(TooLongWordException.class, () -> {
                     String table = Table.builder()
                             .object(basics)
                             .maxColumnWidth(10)
@@ -130,7 +127,7 @@ public class TableTest {
                             .getTable();
                 });
 
-        Assertions.assertEquals(exception.getMessage(), "Element 'forthOption' is too long for table entry -> use multiLine=true");
+        Assertions.assertEquals(exception.getMessage(), "Word forthOption is too long -> consider increasing maxColumnWidth");
     }
 
     @Test
@@ -152,26 +149,104 @@ public class TableTest {
 
         String table = Table.builder()
                 .object(basics)
-                .maxColumnWidth(20)
+                .maxColumnWidth(25)
                 .multiLine(true)
-                .header("Basic class with too long header -> I need more and more and more and more and more text here")
+                .header("Basic class")
                 .getTable();
 
-        System.out.println(table);
+        String expected = """
+                +--------------------------------------------------------------------------------------+
+                |                                      Basic class                                     |
+                +-------+-------------+--------------+---------------------------+---------------------+
+                | first | forthOption | second       | thirdOption               | time                |
+                +-------+-------------+--------------+---------------------------+---------------------+
+                | 1     |             | Second entry | Third Option              | 2022-08-22T21:20:12 |
+                +-------+-------------+--------------+---------------------------+---------------------+
+                | 2     |             | Second entry | Third Option that is      | 2022-08-22T21:20:12 |
+                |       |             |              | too long                  |                     |
+                +-------+-------------+--------------+---------------------------+---------------------+
+                """;
 
-//        String expected = """
-//                +-------------------------------------------------------------------------+
-//                |  Basic class with too long header -> I need more and more and more and  |
-//                |                         more and more text here                         |
-//                +-------+-------------+--------------+--------------+---------------------+
-//                | first | forthOption | second       | thirdOption  | time                |
-//                +-------+-------------+--------------+--------------+---------------------+
-//                | 1     |             | Second entry | Third Option | 2022-08-22T21:20:12 |
-//                +-------+-------------+--------------+--------------+---------------------+
-//                | 2     |             | Second entry | Third Option | 2022-08-22T21:20:12 |
-//                +-------+-------------+--------------+--------------+---------------------+
-//                """;
-//
-//        Assertions.assertEquals(expected, table);
+        Assertions.assertEquals(expected, table);
+    }
+
+    @Test
+    public void convertingBasicClassToTableWithTooLongHeaderAndElementButMultiLineTrue() throws TabulatorException {
+
+        Basic basicOne = Basic.builder()
+                .first(1L)
+                .second("Second entry")
+                .thirdOption("Third Option")
+                .build();
+
+        Basic basicTwo = Basic.builder()
+                .first(2L)
+                .second("Second entry")
+                .thirdOption("Third Option that is too long")
+                .build();
+
+        List<Object> basics = List.of(basicOne, basicTwo);
+
+        String table = Table.builder()
+                .object(basics)
+                .maxColumnWidth(25)
+                .multiLine(true)
+                .header("Basic class header that is too long and we need to have multiple lines more text and more and more text")
+                .getTable();
+
+        String expected = """
+                +--------------------------------------------------------------------------------------+
+                |    Basic class header that is too long and we need to have multiple lines more text  |
+                |                                 and more and more text                               |
+                +-------+-------------+--------------+---------------------------+---------------------+
+                | first | forthOption | second       | thirdOption               | time                |
+                +-------+-------------+--------------+---------------------------+---------------------+
+                | 1     |             | Second entry | Third Option              | 2022-08-22T21:20:12 |
+                +-------+-------------+--------------+---------------------------+---------------------+
+                | 2     |             | Second entry | Third Option that is      | 2022-08-22T21:20:12 |
+                |       |             |              | too long                  |                     |
+                +-------+-------------+--------------+---------------------------+---------------------+
+                """;
+
+        Assertions.assertEquals(expected, table);
+    }
+
+    @Test
+    public void convertingBasicClassToTableWithNoRowSeparators() throws TabulatorException {
+
+        Basic basicOne = Basic.builder()
+                .first(1L)
+                .second("Second entry")
+                .thirdOption("Third Option")
+                .build();
+
+        Basic basicTwo = Basic.builder()
+                .first(2L)
+                .second("Second entry")
+                .thirdOption("Third Option")
+                .build();
+
+        List<Object> basics = List.of(basicOne, basicTwo);
+
+        String table = Table.builder()
+                .object(basics)
+                .maxColumnWidth(25)
+                .multiLine(true)
+                .rowSeparators(false)
+                .header("Basic class")
+                .getTable();
+
+        String expected = """
+                +-------------------------------------------------------------------------+
+                |                               Basic class                               |
+                +-------+-------------+--------------+--------------+---------------------+
+                | first | forthOption | second       | thirdOption  | time                |
+                +-------+-------------+--------------+--------------+---------------------+
+                | 1     |             | Second entry | Third Option | 2022-08-22T21:20:12 |
+                | 2     |             | Second entry | Third Option | 2022-08-22T21:20:12 |
+                +-------+-------------+--------------+--------------+---------------------+
+                """;
+
+        Assertions.assertEquals(expected, table);
     }
 }

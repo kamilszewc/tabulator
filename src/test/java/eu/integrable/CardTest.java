@@ -101,6 +101,6 @@ public class CardTest {
                     .getCard();
         });
 
-        Assertions.assertEquals(exception.getMessage(), "Word ThisIsVeryLongHeaderThatDoesNotFitInOneRaw is too long for header");
+        Assertions.assertEquals(exception.getMessage(), "Word ThisIsVeryLongHeaderThatDoesNotFitInOneRaw is too long -> consider increasing maxColumnWidth");
     }
 }

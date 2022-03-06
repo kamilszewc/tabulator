@@ -27,7 +27,7 @@ public class General {
 
             // Rise exception if the word in header is too long
             if (word.length() + 2 > maxStringLength) {
-                throw new TooLongWordException("Word " + word + " is too long for requested structure");
+                throw new TooLongWordException("Word " + word + " is too long for headerś");
             }
 
             rows.set(rows.size()-1, rows.get(rows.size()-1) + " " + word);

@@ -2,6 +2,7 @@ package eu.integrable;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.integrable.exceptions.NotImplementedException;
 import eu.integrable.exceptions.TooLongWordException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +31,9 @@ public class Table<T> {
 
     String header;
 
+    @Builder.Default
+    boolean multiLine = false;
+
     public Table(List<T> object) {
         this.object = object;
     }
@@ -40,7 +44,7 @@ public class Table<T> {
         return objectMapper.writeValueAsString(object);
     }
 
-    public String getTable() throws TooLongWordException {
+    public String getTable() throws TooLongWordException, NotImplementedException {
 
         List<List<String>> columns = new ArrayList<>();
 
@@ -102,17 +106,27 @@ public class Table<T> {
         return header + body;
     }
 
-    private static String getLine(List<String> elements, List<Integer> columnWidths) {
+    private String getLine(List<String> elements, List<Integer> columnWidths) throws NotImplementedException, TooLongWordException {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("+ ");
+        stringBuilder.append("| ");
         for (int i=0; i<elements.size(); i++) {
             String value = elements.get(i).trim();
             stringBuilder.append(value);
             int numberOfEmpties = columnWidths.get(i) - value.length() - 2;
+
+            // if number of empties is negative -> we need to no fit in max width
+            if (numberOfEmpties < 0) {
+                if (multiLine == true) {
+                    throw new NotImplementedException("Multi line is not implemented yet");
+                } else {
+                    throw new TooLongWordException("Word " + value + " is too long for table entry -> use multiLine=true");
+                }
+            }
+
             stringBuilder.append(" ".repeat(numberOfEmpties));
             if (i < elements.size()-1) stringBuilder.append(" | ");
         }
-        stringBuilder.append(" +\n");
+        stringBuilder.append(" |\n");
         return stringBuilder.toString();
     }
 
@@ -132,7 +146,7 @@ public class Table<T> {
             return build().getJson();
         }
 
-        public String getTable() throws TooLongWordException {
+        public String getTable() throws TooLongWordException, NotImplementedException {
             return build().getTable();
         }
     }

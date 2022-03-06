@@ -1,6 +1,7 @@
 package eu.integrable;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import eu.integrable.exceptions.TooLongWordException;
 import lombok.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,7 +27,7 @@ public class TableTest {
     }
 
     @Test
-    public void convertingBasicClassToTable() {
+    public void convertingBasicClassToTable() throws TooLongWordException {
 
         Basic basicOne = Basic.builder()
                 .first(1L)

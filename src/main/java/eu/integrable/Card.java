@@ -55,37 +55,36 @@ public class Card<T> {
         int valueColumnWidth = maxValueLength < maxColumnWidth ? (maxValueLength + 2) : (maxColumnWidth + 2);
         int width = keyColumnWidth + valueColumnWidth + 3;
 
-        String header = "";
+        StringBuilder stringBuilder = new StringBuilder();
         if (this.header != null) {
             // The top separation line
-            header += "+" + "-".repeat(width-2) + "+\n";
+            stringBuilder.append("+" + "-".repeat(width-2) + "+\n");
 
             // Actual header
             List<String> headerRows = getHeaderRows(this.header, width);
             for (String row : headerRows) {
-                header += row;
+                stringBuilder.append(row);
             }
         }
-        header += "+" + "-".repeat(keyColumnWidth) + "+" + "-".repeat(valueColumnWidth) + "+\n";
-        String footer = "+" + "-".repeat(keyColumnWidth) + "+" + "-".repeat(valueColumnWidth) + "+\n";
+        stringBuilder.append("+" + "-".repeat(keyColumnWidth) + "+" + "-".repeat(valueColumnWidth) + "+\n");
 
-        StringBuilder bodyBuilder = new StringBuilder();
         map.entrySet().stream().forEach(entry -> {
 
             String key = entry.getKey();
             String value = entry.getValue();
 
-            bodyBuilder.append("| ");
-            bodyBuilder.append(key);
-            bodyBuilder.append(" ".repeat(keyColumnWidth - 2 - key.length()));
-            bodyBuilder.append(" | ");
-            bodyBuilder.append(value);
-            bodyBuilder.append(" ".repeat(valueColumnWidth - 2 - value.length()));
-            bodyBuilder.append(" |\n");
+            stringBuilder.append("| ");
+            stringBuilder.append(key);
+            stringBuilder.append(" ".repeat(keyColumnWidth - 2 - key.length()));
+            stringBuilder.append(" | ");
+            stringBuilder.append(value);
+            stringBuilder.append(" ".repeat(valueColumnWidth - 2 - value.length()));
+            stringBuilder.append(" |\n");
         });
-        String body = bodyBuilder.toString();
 
-        return header + body + footer;
+        stringBuilder.append("+" + "-".repeat(keyColumnWidth) + "+" + "-".repeat(valueColumnWidth) + "+\n");
+
+        return stringBuilder.toString();
     }
 
 

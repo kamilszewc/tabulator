@@ -249,4 +249,44 @@ public class TableTest {
 
         Assertions.assertEquals(expected, table);
     }
+
+    @Test
+    public void convertingBasicClassToTableWithSpecificColumns() throws TabulatorException {
+
+        Basic basicOne = Basic.builder()
+                .first(1L)
+                .second("Second entry")
+                .thirdOption("Third Option")
+                .build();
+
+        Basic basicTwo = Basic.builder()
+                .first(2L)
+                .second("Second entry")
+                .thirdOption("Third Option")
+                .build();
+
+        List<Object> basics = List.of(basicOne, basicTwo);
+
+        String table = Table.builder()
+                .object(basics)
+                .maxColumnWidth(25)
+                .multiLine(true)
+                .selectedColumns(List.of("first", "second"))
+                .header("Basic class")
+                .getTable();
+
+        String expected = """
+                +----------------------+
+                |      Basic class     |
+                +-------+--------------+
+                | first | second       |
+                +-------+--------------+
+                | 1     | Second entry |
+                +-------+--------------+
+                | 2     | Second entry |
+                +-------+--------------+
+                """;
+
+        Assertions.assertEquals(expected, table);
+    }
 }

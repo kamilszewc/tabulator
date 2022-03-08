@@ -43,13 +43,13 @@ public class General {
         List<String> headerRows = new ArrayList<>();
         for (String row : rows) {
             int position = width / 2 - row.length() / 2 - 1;
-            String line = "";
-            line += "|";
-            line += " ".repeat(position);
-            line += row;
-            line += " ".repeat(width - position - row.length() - 2);
-            line += "|\n";
-            headerRows.add(line);
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("|");
+            stringBuilder.append(" ".repeat(position));
+            stringBuilder.append(row);
+            stringBuilder.append(" ".repeat(width - position - row.length() - 2));
+            stringBuilder.append("|\n");
+            headerRows.add(stringBuilder.toString());
         }
 
         return headerRows;

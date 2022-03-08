@@ -30,6 +30,8 @@ public class Table<T> {
 
     String header;
 
+    List<String> selectedColumns;
+
     @Builder.Default
     boolean multiLine = false;
 
@@ -50,14 +52,25 @@ public class Table<T> {
 
         List<List<String>> columns = new ArrayList<>();
 
+        if (selectedColumns == null) {
+            selectedColumns = ObjectProcessor.getListOfKeys(this.object.get(0));
+        }
+
         // Get names of keys from the first object
-        var keys = ObjectProcessor.getListOfKeys(this.object.get(0));
+        var keys = ObjectProcessor.getListOfKeys(this.object.get(0)).stream()
+                .filter(element -> selectedColumns.contains(element))
+                .toList();
+
         keys.stream().forEach(element -> {
             columns.add(new ArrayList<>(){{ add(element); }});
         });
 
         for (Object object : this.object) {
-            var values = ObjectProcessor.getListOfValues(object);
+            var values = ObjectProcessor.getMapOfMethodNameAndValue(object)
+                    .entrySet().stream()
+                    .filter(entry -> selectedColumns.contains(entry.getKey()))
+                    .map(entry -> entry.getValue())
+                    .toList();
 
             for (int i=0; i<values.size(); i++) {
                 columns.get(i).add(values.get(i));
@@ -84,32 +97,38 @@ public class Table<T> {
         int width = columnWidths.stream().reduce(0, (a, b) -> a + b) + columns.size() + 1;
 
         // Create header
-        String header = "";
+        StringBuilder stringBuilder = new StringBuilder();
         if (this.header != null) {
             // The top separation line
-            header += "+" + "-".repeat(width-2) + "+\n";
+            stringBuilder.append("+" + "-".repeat(width-2) + "+\n");
 
             // Actual header
             List<String> headerRows = getHeaderRows(this.header, width);
             for (String row : headerRows) {
-                header += row;
+                stringBuilder.append(row);
             }
         }
-        header += getSeparationLine(columnWidths);
+        stringBuilder.append(getSeparationLine(columnWidths));
 
         // Create body
         // Keys
-        String body = getLine(keys, columnWidths);
-        body += getSeparationLine(columnWidths);
+        stringBuilder.append(getLine(keys, columnWidths));
+        stringBuilder.append(getSeparationLine(columnWidths));
         // Values
         for (T object : this.object) {
-            var values = ObjectProcessor.getListOfValues(object);
-            body += getLine(values, columnWidths);
-            if (rowSeparators) body += getSeparationLine(columnWidths);
-        }
-        if (!rowSeparators) body += getSeparationLine(columnWidths);
+            //var values = ObjectProcessor.getListOfValues(object);
+            var values = ObjectProcessor.getMapOfMethodNameAndValue(object)
+                    .entrySet().stream()
+                    .filter(entry -> selectedColumns.contains(entry.getKey()))
+                    .map(entry -> entry.getValue())
+                    .toList();
 
-        return header + body;
+            stringBuilder.append(getLine(values, columnWidths));
+            if (rowSeparators) stringBuilder.append(getSeparationLine(columnWidths));
+        }
+        if (!rowSeparators) stringBuilder.append(getSeparationLine(columnWidths));
+
+        return stringBuilder.toString();
     }
 
     private String getLine(List<String> elements, List<Integer> columnWidths) throws NotImplementedException, TooLongWordException {

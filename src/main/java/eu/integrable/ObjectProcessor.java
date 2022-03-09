@@ -2,10 +2,7 @@ package eu.integrable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ObjectProcessor {
@@ -43,6 +40,52 @@ public class ObjectProcessor {
                     }
                 })
                 .collect(Collectors.toUnmodifiableList());
+    }
+
+    public static Map<String, String> getMapOfMethodNameAndValue(Object object, List<String> selectedKeys) {
+
+        if (selectedKeys == null) return getMapOfMethodNameAndValue(object);
+
+        Map<String, String> map = new LinkedHashMap<>();
+
+        List<Method> methods = getAllGetMethods(object.getClass());
+
+        selectedKeys.stream().forEach(key -> {
+            Method method;
+            try {
+                method = methods.stream()
+                        .filter(m -> {
+                            String name = m.getName().replaceFirst("get", "");
+                            StringBuilder sb = new StringBuilder(name);
+                            sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
+                            name = sb.toString();
+                            return name.equals(key);
+                        })
+                        .findFirst()
+                        .get();
+            } catch (NoSuchElementException ex) {
+                return;
+            }
+
+            try {
+                String name = method.getName().replaceFirst("get", "");
+                StringBuilder sb = new StringBuilder(name);
+                sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
+                name = sb.toString();
+                Object result = method.invoke(object);
+                if (result != null) {
+                    map.put(name, method.invoke(object).toString());
+                } else {
+                    map.put(name, "");
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        });
+
+        return map;
     }
 
     public static Map<String, String> getMapOfMethodNameAndValue(Object object) {

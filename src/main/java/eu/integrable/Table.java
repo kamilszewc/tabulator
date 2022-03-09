@@ -57,14 +57,9 @@ public class Table<T> {
             selectedColumns = ObjectProcessor.getListOfKeys(this.object.get(0));
         }
 
-        // Get names of keys from the first object
-//        var keys = ObjectProcessor.getListOfKeys(this.object.get(0)).stream()
-//                .filter(element -> selectedColumns.contains(element))
-//                .toList();
         var keys = ObjectProcessor.getMapOfMethodNameAndValue(this.object.get(0), selectedColumns)
                 .entrySet().stream()
                 .map(entry -> entry.getKey())
-                //.filter(element -> selectedColumns.contains(element))
                 .toList();
 
         keys.stream().forEach(element -> {
@@ -74,7 +69,6 @@ public class Table<T> {
         for (Object object : this.object) {
             var values = ObjectProcessor.getMapOfMethodNameAndValue(object, selectedColumns)
                     .entrySet().stream()
-                    //.filter(entry -> selectedColumns.contains(entry.getKey()))
                     .map(entry -> entry.getValue())
                     .toList();
 
@@ -122,7 +116,6 @@ public class Table<T> {
         stringBuilder.append(getSeparationLine(columnWidths));
         // Values
         for (T object : this.object) {
-            //var values = ObjectProcessor.getListOfValues(object);
             var values = ObjectProcessor.getMapOfMethodNameAndValue(object, selectedColumns)
                     .entrySet().stream()
                     //.filter(entry -> selectedColumns.contains(entry.getKey()))

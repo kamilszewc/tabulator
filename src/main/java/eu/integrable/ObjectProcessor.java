@@ -3,7 +3,6 @@ package eu.integrable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ObjectProcessor {
 
@@ -11,18 +10,13 @@ public class ObjectProcessor {
         return Arrays.stream(aClass.getDeclaredMethods())
                 .filter(c -> c.getName().startsWith("get"))
                 .sorted((a, b) -> a.getName().compareTo(b.getName()) )
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     public static List<String> getListOfKeys(Object object) {
         return getAllGetMethods(object.getClass()).stream()
-                .map(method -> {
-                    String name = method.getName().replaceFirst("get", "");
-                    StringBuilder sb = new StringBuilder(name);
-                    sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
-                    return sb.toString();
-                })
-                .collect(Collectors.toUnmodifiableList());
+                .map(method -> extractKeyFormMethod(method))
+                .toList();
     }
 
     public static List<String> getListOfValues(Object object) {
@@ -39,7 +33,14 @@ public class ObjectProcessor {
                         return "";
                     }
                 })
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
+    }
+
+    public static String extractKeyFormMethod(Method method) {
+        String name = method.getName().replaceFirst("get", "");
+        StringBuilder sb = new StringBuilder(name);
+        sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
+        return sb.toString();
     }
 
     public static Map<String, String> getMapOfMethodNameAndValue(Object object, List<String> selectedKeys) {
@@ -55,10 +56,7 @@ public class ObjectProcessor {
             try {
                 method = methods.stream()
                         .filter(m -> {
-                            String name = m.getName().replaceFirst("get", "");
-                            StringBuilder sb = new StringBuilder(name);
-                            sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
-                            name = sb.toString();
+                            String name = extractKeyFormMethod(m);
                             return name.equals(key);
                         })
                         .findFirst()
@@ -68,10 +66,7 @@ public class ObjectProcessor {
             }
 
             try {
-                String name = method.getName().replaceFirst("get", "");
-                StringBuilder sb = new StringBuilder(name);
-                sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
-                name = sb.toString();
+                String name = extractKeyFormMethod(method);
                 Object result = method.invoke(object);
                 if (result != null) {
                     map.put(name, method.invoke(object).toString());
@@ -94,10 +89,7 @@ public class ObjectProcessor {
         List<Method> methods = getAllGetMethods(object.getClass());
         methods.stream().forEach(method -> {
             try {
-                String name = method.getName().replaceFirst("get", "");
-                StringBuilder sb = new StringBuilder(name);
-                sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
-                name = sb.toString();
+                String name = extractKeyFormMethod(method);
                 Object result = method.invoke(object);
                 if (result != null) {
                     map.put(name, method.invoke(object).toString());

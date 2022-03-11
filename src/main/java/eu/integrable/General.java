@@ -3,7 +3,9 @@ package eu.integrable;
 import eu.integrable.exceptions.TooLongWordException;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class General {
 
@@ -66,4 +68,66 @@ public class General {
         return stringBuilder.toString();
     }
 
+    public static List<Integer> getColumnWidths(List<List<String>> columns, int maxColumnWidth) {
+        List<Integer> maxElementWidths = columns.stream()
+                .map(column -> {
+                    int maxWidth =  column.stream()
+                            .map(element -> element.length())
+                            .sorted(Comparator.reverseOrder())
+                            .findFirst()
+                            .get();
+                    return maxWidth;
+                }).collect(Collectors.toUnmodifiableList());
+
+
+        // Create columnWidiths
+        List<Integer> columnWidths = new ArrayList<>();
+        for (int i=0; i<columns.size(); i++) {
+            int maxElementWidth = maxElementWidths.get(i);
+            int columnWidth = maxElementWidth < maxColumnWidth ? (maxElementWidth + 2) : (maxColumnWidth + 2);
+            columnWidths.add(columnWidth);
+        }
+
+        return columnWidths;
+    }
+
+    public static String getLine(List<String> elements, List<Integer> columnWidths, int maxColumnWidth) throws TooLongWordException {
+
+        List<List> entries = new ArrayList<>();
+
+        int numberOfRows = 1;
+
+        for (int i=0; i<elements.size(); i++) {
+            String value = elements.get(i).trim();
+
+            List<String> stringRows = getStringRows(value, maxColumnWidth);
+
+            int finalI = i;
+            stringRows = stringRows.stream()
+                    .map(row ->  row + " ".repeat(columnWidths.get(finalI) - row.length()))
+                    .collect(Collectors.toUnmodifiableList());
+
+            if (numberOfRows < stringRows.size()) numberOfRows = stringRows.size();
+
+            entries.add(stringRows);
+        }
+
+        int numberOfColumns = entries.size();
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i=0; i<numberOfRows; i++) {
+            stringBuilder.append("|");
+            for (int j=0; j<numberOfColumns; j++) {
+                try {
+                    stringBuilder.append(entries.get(j).get(i));
+                } catch (IndexOutOfBoundsException ex) {
+                    stringBuilder.append(" ".repeat(columnWidths.get(j)));
+                }
+                if (j < numberOfColumns - 1) stringBuilder.append("|");
+            }
+            stringBuilder.append("|\n");
+        }
+
+        return stringBuilder.toString();
+    }
 }

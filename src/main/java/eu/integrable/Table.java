@@ -10,9 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static eu.integrable.General.*;
 
@@ -49,7 +47,7 @@ public class Table<T> {
         return objectMapper.writeValueAsString(object);
     }
 
-    public String getTable() throws TooLongWordException, NotImplementedException {
+    public String getTable() throws TooLongWordException {
 
         List<List<String>> columns = new ArrayList<>();
 
@@ -77,23 +75,10 @@ public class Table<T> {
             }
         }
 
-        List<Integer> maxElementWidths = columns.stream()
-                .map(column -> {
-                    int maxWidth =  column.stream()
-                            .map(element -> element.length())
-                            .sorted(Comparator.reverseOrder())
-                            .findFirst()
-                            .get();
-                    return maxWidth;
-                }).collect(Collectors.toUnmodifiableList());
+        // Get column Widths
+        List<Integer> columnWidths = getColumnWidths(columns, maxColumnWidth);
 
-        List<Integer> columnWidths = new ArrayList<>();
-        for (int i=0; i<columns.size(); i++) {
-            int maxElementWidth = maxElementWidths.get(i);
-            int columnWidth = maxElementWidth < maxColumnWidth ? (maxElementWidth + 2) : (maxColumnWidth + 2);
-            columnWidths.add(columnWidth);
-        }
-
+        // Calculate the total width
         int width = columnWidths.stream().reduce(0, (a, b) -> a + b) + columns.size() + 1;
 
         // Create header
@@ -112,60 +97,19 @@ public class Table<T> {
 
         // Create body
         // Keys
-        stringBuilder.append(getLine(keys, columnWidths));
+        stringBuilder.append(getLine(keys, columnWidths, maxColumnWidth));
         stringBuilder.append(getSeparationLine(columnWidths));
         // Values
         for (T object : this.object) {
             var values = ObjectProcessor.getMapOfMethodNameAndValue(object, selectedColumns)
                     .entrySet().stream()
-                    //.filter(entry -> selectedColumns.contains(entry.getKey()))
                     .map(entry -> entry.getValue())
                     .toList();
 
-            stringBuilder.append(getLine(values, columnWidths));
+            stringBuilder.append(getLine(values, columnWidths, maxColumnWidth));
             if (rowSeparators) stringBuilder.append(getSeparationLine(columnWidths));
         }
         if (!rowSeparators) stringBuilder.append(getSeparationLine(columnWidths));
-
-        return stringBuilder.toString();
-    }
-
-    private String getLine(List<String> elements, List<Integer> columnWidths) throws NotImplementedException, TooLongWordException {
-
-        List<List> entries = new ArrayList<>();
-
-        int numberOfRows = 1;
-
-        for (int i=0; i<elements.size(); i++) {
-            String value = elements.get(i).trim();
-
-            List<String> stringRows = getStringRows(value, maxColumnWidth);
-
-            int finalI = i;
-            stringRows = stringRows.stream()
-                    .map(row ->  row + " ".repeat(columnWidths.get(finalI) - row.length()))
-                    .collect(Collectors.toUnmodifiableList());
-
-            if (numberOfRows < stringRows.size()) numberOfRows = stringRows.size();
-
-            entries.add(stringRows);
-        }
-
-        int numberOfColumns = entries.size();
-
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i=0; i<numberOfRows; i++) {
-            stringBuilder.append("|");
-            for (int j=0; j<numberOfColumns; j++) {
-                try {
-                    stringBuilder.append(entries.get(j).get(i));
-                } catch (IndexOutOfBoundsException ex) {
-                    stringBuilder.append(" ".repeat(columnWidths.get(j)));
-                }
-                if (j < numberOfColumns - 1) stringBuilder.append("|");
-            }
-            stringBuilder.append("|\n");
-        }
 
         return stringBuilder.toString();
     }

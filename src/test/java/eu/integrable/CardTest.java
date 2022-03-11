@@ -103,4 +103,74 @@ public class CardTest {
 
         Assertions.assertEquals(exception.getMessage(), "Word ThisIsVeryLongHeaderThatDoesNotFitInOneRaw is too long -> consider increasing maxColumnWidth");
     }
+
+    @Test
+    public void convertingBasicClassWithMultiLineRow() throws TooLongWordException {
+
+        Basic basic = Basic.builder()
+                .first(1L)
+                .second("Second entry")
+                .thirdOption("Third Option is quite long and it would be nice if we can have multi line")
+                .time(LocalDateTime.of(2022, Month.AUGUST, 22, 10, 12, 33))
+                .build();
+
+        String card = Card.builder()
+                .object(basic)
+                .maxColumnWidth(30)
+                .multiLine(true)
+                .header("Basic class")
+                .getCard();
+
+        String expected = """
+                +-----------------------------------------------+
+                |                  Basic class                  |
+                +--------------+--------------------------------+
+                | first        | 1                              |
+                | fourthOption |                                |
+                | second       | Second entry                   |
+                | thirdOption  | Third Option is quite          |
+                |              | long and it would be nice      |
+                |              | if we can have multi line      |
+                | time         | 2022-08-22T10:12:33            |
+                +--------------+--------------------------------+
+                """;
+
+        Assertions.assertEquals(expected, card);
+    }
+
+    @Test
+    public void convertingBasicClassWithMultiLineRowAndHeader() throws TooLongWordException {
+
+        Basic basic = Basic.builder()
+                .first(1L)
+                .second("Second entry")
+                .thirdOption("Third Option is quite long and it would be nice if we can have multi line")
+                .time(LocalDateTime.of(2022, Month.AUGUST, 22, 10, 12, 33))
+                .build();
+
+        String card = Card.builder()
+                .object(basic)
+                .maxColumnWidth(30)
+                .multiLine(true)
+                .header("Basic class - this is very long header that needs to be multi line")
+                .getCard();
+
+        String expected = """
+                +-----------------------------------------------+
+                |  Basic class - this is very long header that  |
+                |             needs to be multi line            |
+                +--------------+--------------------------------+
+                | first        | 1                              |
+                | fourthOption |                                |
+                | second       | Second entry                   |
+                | thirdOption  | Third Option is quite          |
+                |              | long and it would be nice      |
+                |              | if we can have multi line      |
+                | time         | 2022-08-22T10:12:33            |
+                +--------------+--------------------------------+
+                """;
+
+        Assertions.assertEquals(expected, card);
+    }
+
 }

@@ -8,10 +8,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static eu.integrable.General.getHeaderRows;
+import static eu.integrable.General.*;
 
 @Builder
 @AllArgsConstructor
@@ -26,6 +27,12 @@ public class Card<T> {
 
     String header;
 
+    @Builder.Default
+    boolean multiLine = false;
+
+    @Builder.Default
+    boolean rowSeparators = false;
+
     public Card(T object) {
         this.object = object;
     }
@@ -37,24 +44,21 @@ public class Card<T> {
     }
 
     public String getCard() throws TooLongWordException {
+
+        List<List<String>> columns = new ArrayList<>();
+
         var map = ObjectProcessor.getMapOfMethodNameAndValue(object);
 
-        int maxKeyLength = map.keySet().stream()
-                .map(key -> key.length())
-                .sorted(Comparator.reverseOrder())
-                .findFirst()
-                .get();
+        columns.add(map.keySet().stream().toList());
+        columns.add(map.values().stream().toList());
 
-        int maxValueLength = map.values().stream()
-                .map(key -> key.length())
-                .sorted(Comparator.reverseOrder())
-                .findFirst()
-                .get();
+        // Get column Widths
+        List<Integer> columnWidths = getColumnWidths(columns, maxColumnWidth);
 
-        int keyColumnWidth = maxKeyLength < maxColumnWidth ? (maxKeyLength + 2) : (maxColumnWidth + 2);
-        int valueColumnWidth = maxValueLength < maxColumnWidth ? (maxValueLength + 2) : (maxColumnWidth + 2);
-        int width = keyColumnWidth + valueColumnWidth + 3;
+        // Calculate the total width
+        int width = columnWidths.stream().reduce(0, (a, b) -> a + b) + columns.size() + 1;
 
+        // Create header
         StringBuilder stringBuilder = new StringBuilder();
         if (this.header != null) {
             // The top separation line
@@ -66,23 +70,15 @@ public class Card<T> {
                 stringBuilder.append(row);
             }
         }
-        stringBuilder.append("+" + "-".repeat(keyColumnWidth) + "+" + "-".repeat(valueColumnWidth) + "+\n");
+        stringBuilder.append(getSeparationLine(columnWidths));
 
-        map.entrySet().stream().forEach(entry -> {
+        // Create body
+        for (var e : map.entrySet()) {
+            stringBuilder.append(getLine(List.of(e.getKey(), e.getValue()), columnWidths, maxColumnWidth));
+            if (rowSeparators) stringBuilder.append(getSeparationLine(columnWidths));
+        };
+        if (!rowSeparators) stringBuilder.append(getSeparationLine(columnWidths));
 
-            String key = entry.getKey();
-            String value = entry.getValue();
-
-            stringBuilder.append("| ");
-            stringBuilder.append(key);
-            stringBuilder.append(" ".repeat(keyColumnWidth - 2 - key.length()));
-            stringBuilder.append(" | ");
-            stringBuilder.append(value);
-            stringBuilder.append(" ".repeat(valueColumnWidth - 2 - value.length()));
-            stringBuilder.append(" |\n");
-        });
-
-        stringBuilder.append("+" + "-".repeat(keyColumnWidth) + "+" + "-".repeat(valueColumnWidth) + "+\n");
 
         return stringBuilder.toString();
     }

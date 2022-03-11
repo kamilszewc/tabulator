@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'eu.integrable'
-version '0.8'
+version '0.9'
 
 
 repositories {
@@ -21,8 +21,8 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.22'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.1'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.2'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.2'
 
 }
 

@@ -1,6 +1,6 @@
-package com.computinglaboratory;
+package com.computinglaboratory.tabulator;
 
-import com.computinglaboratory.exceptions.TooLongWordException;
+import com.computinglaboratory.tabulator.exceptions.TooLongWordException;
 import lombok.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
-package eu.integrable;
+package com.computinglaboratory;
 
-import eu.integrable.exceptions.TooLongWordException;
+import com.computinglaboratory.exceptions.TooLongWordException;
 
 import java.util.ArrayList;
 import java.util.Comparator;

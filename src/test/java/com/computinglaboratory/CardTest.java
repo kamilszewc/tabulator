@@ -1,6 +1,6 @@
-package eu.integrable;
+package com.computinglaboratory;
 
-import eu.integrable.exceptions.TooLongWordException;
+import com.computinglaboratory.exceptions.TooLongWordException;
 import lombok.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

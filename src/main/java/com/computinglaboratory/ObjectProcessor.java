@@ -1,4 +1,4 @@
-package eu.integrable;
+package com.computinglaboratory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

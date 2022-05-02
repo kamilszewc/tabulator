@@ -1,4 +1,4 @@
-package eu.integrable.exceptions;
+package com.computinglaboratory.exceptions;
 
 public class NotImplementedException extends TabulatorException {
 

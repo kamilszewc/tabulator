@@ -1,9 +1,9 @@
-package eu.integrable;
+package com.computinglaboratory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import eu.integrable.exceptions.NotImplementedException;
-import eu.integrable.exceptions.TooLongWordException;
+import com.computinglaboratory.exceptions.NotImplementedException;
+import com.computinglaboratory.exceptions.TooLongWordException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static eu.integrable.General.*;
+import static com.computinglaboratory.General.*;
 
 
 @Builder

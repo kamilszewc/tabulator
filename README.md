@@ -8,7 +8,7 @@ Usage with maven:
 
 ```xml
 <dependency>
-    <groupId>com.computinglaboratory</groupId>
+    <groupId>io.github.kamilszewc.tabulator</groupId>
     <artifactId>tabulator</artifactId>
     <version>1.4</version>
 </dependency>
@@ -17,7 +17,7 @@ Usage with maven:
 Usage with gradle:
 
 ```groovy
-implementation 'com.computinglaboratory:tabulator:1.4'
+implementation 'io.github.kamilszewc:tabulator:1.4'
 ```
 
 ## Usage

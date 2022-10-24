@@ -1,4 +1,4 @@
-package com.computinglaboratory.tabulator;
+package io.github.kamilszewc.tabulator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

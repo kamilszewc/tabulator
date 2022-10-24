@@ -4,8 +4,8 @@ plugins {
     id 'signing' // Required by maven central
 }
 
-group 'com.computinglaboratory'
-version '1.4'
+group 'io.github.kamilszewc.tabulator'
+version '1.5'
 
 
 repositories {
@@ -13,8 +13,8 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
 
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
@@ -22,8 +22,8 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.24'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.2.2'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4.2'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.4'
 }
 
 test {
@@ -58,7 +58,7 @@ publishing {
             pom {
                 name = 'Tabulator'
                 description = 'Simple tables/lists output formater'
-                url = 'https://github.com/computinglaboratory/tabulator'
+                url = 'https://github.com/kamilszewc/tabulator'
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'
@@ -73,9 +73,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:git://github.com/computinglaboratory/tabulator.git'
-                    developerConnection = 'scm:git:https://github.com/computinglaboratory/tabulator.git'
-                    url = 'https://github.com/computinglaboratory/tabulator.git'
+                    connection = 'scm:git:git://github.com/kamilszewc/tabulator.git'
+                    developerConnection = 'scm:git:https://github.com/kamilszewc/tabulator.git'
+                    url = 'https://github.com/kamilszewc/tabulator.git'
                 }
             }
         }

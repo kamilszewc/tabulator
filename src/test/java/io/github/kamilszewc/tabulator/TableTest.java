@@ -1,7 +1,7 @@
-package com.computinglaboratory.tabulator;
+package io.github.kamilszewc.tabulator;
 
-import com.computinglaboratory.tabulator.exceptions.TabulatorException;
-import com.computinglaboratory.tabulator.exceptions.TooLongWordException;
+import io.github.kamilszewc.tabulator.exceptions.TabulatorException;
+import io.github.kamilszewc.tabulator.exceptions.TooLongWordException;
 import lombok.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

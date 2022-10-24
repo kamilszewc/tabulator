@@ -1,8 +1,8 @@
-package com.computinglaboratory.tabulator;
+package io.github.kamilszewc.tabulator;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.computinglaboratory.tabulator.exceptions.TooLongWordException;
+import io.github.kamilszewc.tabulator.exceptions.TooLongWordException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.computinglaboratory.tabulator.General.*;
+import static io.github.kamilszewc.tabulator.General.*;
 
 @Builder
 @AllArgsConstructor

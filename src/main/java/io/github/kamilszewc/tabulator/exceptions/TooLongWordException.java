@@ -1,4 +1,4 @@
-package com.computinglaboratory.tabulator.exceptions;
+package io.github.kamilszewc.tabulator.exceptions;
 
 public class TooLongWordException extends TabulatorException {
 

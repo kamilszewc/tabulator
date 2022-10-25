@@ -8,7 +8,7 @@ Usage with maven:
 
 ```xml
 <dependency>
-    <groupId>io.github.kamilszewc.tabulator</groupId>
+    <groupId>io.github.kamilszewc</groupId>
     <artifactId>tabulator</artifactId>
     <version>1.4</version>
 </dependency>

@@ -24,7 +24,7 @@ public class Table<T> {
     private List<T> object;
 
     @Builder.Default
-    private int maxColumnWidth = 30;
+    private int maxColumnWidth = 80;
 
     String header;
 

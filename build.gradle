@@ -4,8 +4,8 @@ plugins {
     id 'signing' // Required by maven central
 }
 
-group 'io.github.kamilszewc.tabulator'
-version '1.5'
+group 'io.github.kamilszewc'
+version '2.0'
 
 
 repositories {

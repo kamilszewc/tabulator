@@ -1,8 +1,5 @@
 package io.github.kamilszewc.tabulator;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.kamilszewc.tabulator.exceptions.NotImplementedException;
 import io.github.kamilszewc.tabulator.exceptions.TooLongWordException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,42 +8,60 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static io.github.kamilszewc.tabulator.General.*;
 
-
+/**
+ * Table class representing the table-view of given list of objects.
+ * It can be used to generate pretty looking strings describing given list of objects.
+ * @param <T> Class type
+ */
 @Builder
 @AllArgsConstructor
 @Setter
 @Getter
 public class Table<T> {
 
+    /**
+     * The list of objects to be represented as table
+     */
     private List<T> object;
 
+    /**
+     * Sets the maximum allowed table column width
+     */
     @Builder.Default
     private int maxColumnWidth = 80;
 
+    /**
+     * Sets the table header
+     */
     String header;
 
+    /**
+     * Allows to select columns to be presented in table
+     */
     @Builder.Default
     List<String> selectedColumns = null;
 
+    /**
+     * Allow/disallow multi-line entries
+     */
     @Builder.Default
     boolean multiLine = false;
 
+    /**
+     * Turn on/off the tables row separators
+     */
     @Builder.Default
     boolean rowSeparators = true;
 
-    public Table(List<T> object) {
-        this.object = object;
-    }
-
-    public String getJson() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.findAndRegisterModules();
-        return objectMapper.writeValueAsString(object);
-    }
-
+    /**
+     * Returns a table as string that represents given list of objects
+     * @return table as a string
+     * @throws TooLongWordException if the word in card is longer then allowed
+     */
     public String getTable() throws TooLongWordException {
 
         List<List<String>> columns = new ArrayList<>();
@@ -57,17 +72,15 @@ public class Table<T> {
 
         var keys = ObjectProcessor.getMapOfMethodNameAndValue(this.object.get(0), selectedColumns)
                 .entrySet().stream()
-                .map(entry -> entry.getKey())
+                .map(Map.Entry::getKey)
                 .toList();
 
-        keys.stream().forEach(element -> {
-            columns.add(new ArrayList<>(){{ add(element); }});
-        });
+        keys.stream().forEach(element -> columns.add(new ArrayList<>(){{ add(element); }}));
 
         for (Object object : this.object) {
             var values = ObjectProcessor.getMapOfMethodNameAndValue(object, selectedColumns)
                     .entrySet().stream()
-                    .map(entry -> entry.getValue())
+                    .map(Map.Entry::getValue)
                     .toList();
 
             for (int i=0; i<values.size(); i++) {
@@ -79,7 +92,7 @@ public class Table<T> {
         List<Integer> columnWidths = getColumnWidths(columns, maxColumnWidth);
 
         // Calculate the total width
-        int width = columnWidths.stream().reduce(0, (a, b) -> a + b) + columns.size() + 1;
+        int width = columnWidths.stream().reduce(0, Integer::sum) + columns.size() + 1;
 
         // Create header
         StringBuilder stringBuilder = new StringBuilder();
@@ -103,7 +116,7 @@ public class Table<T> {
         for (T object : this.object) {
             var values = ObjectProcessor.getMapOfMethodNameAndValue(object, selectedColumns)
                     .entrySet().stream()
-                    .map(entry -> entry.getValue())
+                    .map(Map.Entry::getValue)
                     .toList();
 
             stringBuilder.append(getLine(values, columnWidths, maxColumnWidth));
@@ -115,13 +128,18 @@ public class Table<T> {
     }
 
 
+    /**
+     * Table-builder class.
+     * @param <T> Class type
+     */
     public static class TableBuilder<T> {
 
-        public String getJson() throws JsonProcessingException {
-            return build().getJson();
-        }
-
-        public String getTable() throws TooLongWordException, NotImplementedException {
+        /**
+         * Returns a table as string that represents given list of objects
+         * @return table as a string
+         * @throws TooLongWordException if the word in card is longer then allowed
+         */
+        public String getTable() throws TooLongWordException {
             return build().getTable();
         }
     }

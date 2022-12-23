@@ -4,18 +4,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
-public class ObjectProcessor {
+class ObjectProcessor {
 
-    public static List<Method> getAllGetMethods(Class aClass) {
+    public static List<Method> getAllGetMethods(Class<?> aClass) {
         return Arrays.stream(aClass.getDeclaredMethods())
                 .filter(c -> c.getName().startsWith("get"))
-                .sorted((a, b) -> a.getName().compareTo(b.getName()) )
+                .sorted(Comparator.comparing(Method::getName))
                 .toList();
     }
 
     public static List<String> getListOfKeys(Object object) {
         return getAllGetMethods(object.getClass()).stream()
-                .map(method -> extractKeyFormMethod(method))
+                .map(ObjectProcessor::extractKeyFormMethod)
                 .toList();
     }
 

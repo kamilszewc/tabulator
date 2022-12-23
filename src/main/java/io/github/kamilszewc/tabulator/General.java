@@ -7,7 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class General {
+class General {
 
     static List<String> getStringRows(String text, int width) throws TooLongWordException {
 
@@ -93,7 +93,7 @@ public class General {
 
     public static String getLine(List<String> elements, List<Integer> columnWidths, int maxColumnWidth) throws TooLongWordException {
 
-        List<List> entries = new ArrayList<>();
+        List<List<?>> entries = new ArrayList<>();
 
         int numberOfRows = 1;
 

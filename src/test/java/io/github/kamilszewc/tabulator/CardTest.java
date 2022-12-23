@@ -10,11 +10,8 @@ import java.time.Month;
 
 public class CardTest {
 
-    @Getter
-    @Setter
+    @Data
     @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
     @ToString
     public static class Basic {
         private Long first;

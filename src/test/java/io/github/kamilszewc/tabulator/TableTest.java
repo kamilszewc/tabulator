@@ -12,11 +12,8 @@ import java.util.List;
 
 public class TableTest {
 
-    @Getter
-    @Setter
+    @Data
     @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
     @ToString
     public static class Basic {
         private Long first;

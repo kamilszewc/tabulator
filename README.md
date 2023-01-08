@@ -1,5 +1,9 @@
 # Tabulator
 
+## Description
+
+Easy to use java library to represent objects as nicely formatted tables.
+
 ## Installation
 
 The compiled libraries are deployed to Maven Central.

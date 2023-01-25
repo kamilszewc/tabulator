@@ -24,6 +24,11 @@ import static io.github.kamilszewc.tabulator.General.*;
 public class Table<T> {
 
     /**
+     * Constructor
+     */
+    public Table() {}
+
+    /**
      * The list of objects to be represented as table
      */
     private List<T> object;
@@ -133,6 +138,11 @@ public class Table<T> {
      * @param <T> Class type
      */
     public static class TableBuilder<T> {
+
+        /**
+         * Constructor
+         */
+        public TableBuilder() {}
 
         /**
          * Returns a table as string that represents given list of objects

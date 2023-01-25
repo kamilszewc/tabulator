@@ -23,6 +23,11 @@ import static io.github.kamilszewc.tabulator.General.*;
 public class Card<T> {
 
     /**
+     * Constructor
+     */
+    public Card() {}
+
+    /**
      * The object to be represented as card
      */
     private T object;
@@ -101,6 +106,11 @@ public class Card<T> {
      * @param <T> Class type
      */
     public static class CardBuilder<T> {
+
+        /**
+         * Constructor
+         */
+        public CardBuilder() {}
 
         /**
          * Returns a card as string that represents given object

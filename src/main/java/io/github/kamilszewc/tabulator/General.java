@@ -1,5 +1,6 @@
 package io.github.kamilszewc.tabulator;
 
+import io.github.kamilszewc.javaansitextcolorizer.Colorizer;
 import io.github.kamilszewc.tabulator.exceptions.TooLongWordException;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ class General {
         return rows;
     }
 
-    static List<String> getHeaderRows(String header, int width) throws TooLongWordException {
+    static List<String> getHeaderRows(String header, int width, Colorizer.Color headerColor) throws TooLongWordException {
 
         List<String> rows = getStringRows(header, width);
 
@@ -48,8 +49,10 @@ class General {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("|");
             stringBuilder.append(" ".repeat(position));
+            int repeatNumber = width - position - row.length() - 2;
+            if (headerColor != null) row = Colorizer.color(row, headerColor);
             stringBuilder.append(row);
-            stringBuilder.append(" ".repeat(width - position - row.length() - 2));
+            stringBuilder.append(" ".repeat(repeatNumber));
             stringBuilder.append("|\n");
             headerRows.add(stringBuilder.toString());
         }

@@ -1,5 +1,6 @@
 package io.github.kamilszewc.tabulator;
 
+import io.github.kamilszewc.javaansitextcolorizer.Colorizer;
 import io.github.kamilszewc.tabulator.exceptions.TooLongWordException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,6 +44,11 @@ public class Table<T> {
      * Sets the table header
      */
     String header;
+
+    /**
+     * Sets the header color
+     */
+    Colorizer.Color headerColor;
 
     /**
      * Allows to select columns to be presented in table
@@ -106,7 +112,7 @@ public class Table<T> {
             stringBuilder.append("+" + "-".repeat(width-2) + "+\n");
 
             // Actual header
-            List<String> headerRows = getHeaderRows(this.header, width);
+            List<String> headerRows = getHeaderRows(this.header, width, headerColor);
             for (String row : headerRows) {
                 stringBuilder.append(row);
             }

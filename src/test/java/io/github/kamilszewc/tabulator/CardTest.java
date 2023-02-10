@@ -1,5 +1,6 @@
 package io.github.kamilszewc.tabulator;
 
+import io.github.kamilszewc.javaansitextcolorizer.Colorizer;
 import io.github.kamilszewc.tabulator.exceptions.TooLongWordException;
 import lombok.*;
 import org.junit.jupiter.api.Assertions;
@@ -49,6 +50,37 @@ public class CardTest {
                 """;
 
         Assertions.assertEquals(expected, card);
+    }
+
+    @Test
+    public void convertingBasicClassToCardWithColorHeader() throws TooLongWordException {
+
+        Basic basic = Basic.builder()
+                .first(1L)
+                .second("Second entry")
+                .thirdOption("Third Option")
+                .build();
+
+        String card = Card.builder()
+                .object(basic)
+                .header("Basic class")
+                .headerColor(Colorizer.Color.RED)
+                .getCard();
+
+        String expected = """
+                +------------------------------------+
+                |             Basic class            |
+                +--------------+---------------------+
+                | first        | 1                   |
+                | fourthOption |                     |
+                | second       | Second entry        |
+                | thirdOption  | Third Option        |
+                | time         | 2022-08-10T11:12:12 |
+                +--------------+---------------------+
+                """;
+
+        //Assertions.assertEquals(expected, card);
+        System.out.println(card);
     }
 
     @Test

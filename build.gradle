@@ -8,6 +8,8 @@ plugins {
 group 'io.github.kamilszewc'
 version '2.3'
 
+sourceCompatibility = '17'
+targetCompatibility = '17'
 
 repositories {
     mavenCentral()
@@ -22,6 +24,9 @@ dependencies {
 
     testCompileOnly 'org.projectlombok:lombok:1.18.24'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    implementation 'io.github.kamilszewc:java-ansi-text-colorizer:0.5'
+
 }
 
 test {

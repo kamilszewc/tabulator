@@ -1,5 +1,6 @@
 package io.github.kamilszewc.tabulator;
 
+import io.github.kamilszewc.javaansitextcolorizer.Colorizer;
 import io.github.kamilszewc.tabulator.exceptions.TabulatorException;
 import io.github.kamilszewc.tabulator.exceptions.TooLongWordException;
 import lombok.*;
@@ -325,5 +326,43 @@ public class TableTest {
                 """;
 
         Assertions.assertEquals(expected, table);
+    }
+
+    @Test
+    public void tableWithColorGeader() throws TabulatorException {
+
+        Basic basicOne = Basic.builder()
+                .first(1L)
+                .second("Second entry")
+                .thirdOption("Third Option")
+                .build();
+
+        Basic basicTwo = Basic.builder()
+                .first(2L)
+                .second("Second entry")
+                .thirdOption("Third Option")
+                .build();
+
+        List<Object> basics = List.of(basicOne, basicTwo);
+
+        String table = Table.builder()
+                .object(basics)
+                .header("Basic class")
+                .headerColor(Colorizer.Color.BLUE)
+                .getTable();
+
+        String expected = """
+                +-------------------------------------------------------------------------+
+                |                               Basic class                               |
+                +-------+-------------+--------------+--------------+---------------------+
+                | first | forthOption | second       | thirdOption  | time                |
+                +-------+-------------+--------------+--------------+---------------------+
+                | 1     |             | Second entry | Third Option | 2022-08-22T21:20:12 |
+                +-------+-------------+--------------+--------------+---------------------+
+                | 2     |             | Second entry | Third Option | 2022-08-22T21:20:12 |
+                +-------+-------------+--------------+--------------+---------------------+
+                """;
+
+        System.out.println(table);
     }
 }

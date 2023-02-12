@@ -1,15 +1,15 @@
 plugins {
-    id 'java-library'
+    id 'java-library' // Java library
     id 'maven-publish' // To publish into github
     id 'signing' // Required by maven central
-    id 'org.sonatype.gradle.plugins.scan' version '2.5.5'
+    id 'org.sonatype.gradle.plugins.scan' version '2.5.5' // Sonatype scanner
 }
 
 group 'io.github.kamilszewc'
-version '2.3'
+version '2.4'
 
-sourceCompatibility = '17'
-targetCompatibility = '17'
+sourceCompatibility = '10'
+targetCompatibility = '10'
 
 repositories {
     mavenCentral()
@@ -25,12 +25,17 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.24'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-    implementation 'io.github.kamilszewc:java-ansi-text-colorizer:0.5'
+    implementation 'io.github.kamilszewc:java-ansi-text-colorizer:0.6'
 
 }
 
 test {
     useJUnitPlatform()
+}
+
+compileTestJava {
+    sourceCompatibility = '15'
+    targetCompatibility = '15'
 }
 
 java {

@@ -1,8 +1,9 @@
-package io.github.kamilszewc.tabulator;
+package com.computinglaboratory.tabulator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Collectors;
 
 class ObjectProcessor {
 
@@ -10,13 +11,13 @@ class ObjectProcessor {
         return Arrays.stream(aClass.getDeclaredMethods())
                 .filter(c -> c.getName().startsWith("get"))
                 .sorted(Comparator.comparing(Method::getName))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public static List<String> getListOfKeys(Object object) {
         return getAllGetMethods(object.getClass()).stream()
                 .map(ObjectProcessor::extractKeyFormMethod)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public static List<String> getListOfValues(Object object) {
@@ -33,7 +34,7 @@ class ObjectProcessor {
                         return "";
                     }
                 })
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public static String extractKeyFormMethod(Method method) {

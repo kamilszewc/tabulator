@@ -1,7 +1,7 @@
-package io.github.kamilszewc.tabulator;
+package com.computinglaboratory.tabulator;
 
-import io.github.kamilszewc.javaansitextcolorizer.Colorizer;
-import io.github.kamilszewc.tabulator.exceptions.TooLongWordException;
+import com.computinglaboratory.javaansitextcolorizer.Colorizer;
+import com.computinglaboratory.tabulator.exceptions.TooLongWordException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,8 +9,9 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static io.github.kamilszewc.tabulator.General.*;
+import static com.computinglaboratory.tabulator.General.*;
 
 /**
  * Card class representing the card-view of given class object.
@@ -72,8 +73,8 @@ public class Card<T> {
 
         var map = ObjectProcessor.getMapOfMethodNameAndValue(object);
 
-        columns.add(map.keySet().stream().toList());
-        columns.add(map.values().stream().toList());
+        columns.add(map.keySet().stream().collect(Collectors.toList()));
+        columns.add(map.values().stream().collect(Collectors.toList()));
 
         // Get column Widths
         List<Integer> columnWidths = getColumnWidths(columns, maxColumnWidth);

@@ -1,9 +1,9 @@
 /**
  * Tabulator module
  */
-module io.github.kamilszewc.tabulator {
+module com.computinglaboratory.tabulator {
     requires lombok;
-    requires io.github.kamilszewc.javaansitextcolorizer;
+    requires com.computinglaboratory.javaansitextcolorizer;
 
-    exports io.github.kamilszewc.tabulator;
+    exports com.computinglaboratory.tabulator;
 }

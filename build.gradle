@@ -5,8 +5,8 @@ plugins {
     id 'org.sonatype.gradle.plugins.scan' version '2.5.5' // Sonatype scanner
 }
 
-group 'io.github.kamilszewc'
-version '2.4'
+group 'com.computinglaboratory'
+version '3.0'
 
 sourceCompatibility = '10'
 targetCompatibility = '10'
@@ -25,7 +25,7 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.24'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-    implementation 'io.github.kamilszewc:java-ansi-text-colorizer:0.6'
+    implementation 'com.computinglaboratory:java-ansi-text-colorizer:1.0'
 
 }
 
@@ -52,9 +52,16 @@ publishing {
         maven {
             name = "OSSRH"
             url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-            credentials {
-                username = "$mavenCentralUser"
-                password = "$mavenCentralPassword"
+            try {
+                credentials {
+                    username = "$mavenCentralUser"
+                    password = "$mavenCentralPassword"
+                }
+            } catch (Exception ex) {
+                credentials {
+                    username = " "
+                    password = " "
+                }
             }
         }
     }

@@ -12,16 +12,16 @@ Usage with maven:
 
 ```xml
 <dependency>
-    <groupId>io.github.kamilszewc</groupId>
+    <groupId>com.computinglaboratory</groupId>
     <artifactId>tabulator</artifactId>
-    <version>2.4</version>
+    <version>3.0</version>
 </dependency>
 ```
 
 Usage with gradle:
 
 ```groovy
-implementation 'io.github.kamilszewc:tabulator:2.4'
+implementation 'com.computinglaboratory:tabulator:3.0'
 ```
 
 ## Usage

@@ -1,7 +1,7 @@
-package io.github.kamilszewc.tabulator;
+package com.computinglaboratory.tabulator;
 
-import io.github.kamilszewc.javaansitextcolorizer.Colorizer;
-import io.github.kamilszewc.tabulator.exceptions.TooLongWordException;
+import com.computinglaboratory.javaansitextcolorizer.Colorizer;
+import com.computinglaboratory.tabulator.exceptions.TooLongWordException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,8 +10,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static io.github.kamilszewc.tabulator.General.*;
+import java.util.stream.Collectors;
 
 /**
  * Table class representing the table-view of given list of objects.
@@ -84,7 +83,7 @@ public class Table<T> {
         var keys = ObjectProcessor.getMapOfMethodNameAndValue(this.object.get(0), selectedColumns)
                 .entrySet().stream()
                 .map(Map.Entry::getKey)
-                .toList();
+                .collect(Collectors.toList());
 
         keys.stream().forEach(element -> columns.add(new ArrayList<>(){{ add(element); }}));
 
@@ -92,7 +91,7 @@ public class Table<T> {
             var values = ObjectProcessor.getMapOfMethodNameAndValue(object, selectedColumns)
                     .entrySet().stream()
                     .map(Map.Entry::getValue)
-                    .toList();
+                    .collect(Collectors.toList());
 
             for (int i=0; i<values.size(); i++) {
                 columns.get(i).add(values.get(i));
@@ -100,7 +99,7 @@ public class Table<T> {
         }
 
         // Get column Widths
-        List<Integer> columnWidths = getColumnWidths(columns, maxColumnWidth);
+        List<Integer> columnWidths = General.getColumnWidths(columns, maxColumnWidth);
 
         // Calculate the total width
         int width = columnWidths.stream().reduce(0, Integer::sum) + columns.size() + 1;
@@ -112,28 +111,28 @@ public class Table<T> {
             stringBuilder.append("+" + "-".repeat(width-2) + "+\n");
 
             // Actual header
-            List<String> headerRows = getHeaderRows(this.header, width, headerColor);
+            List<String> headerRows = General.getHeaderRows(this.header, width, headerColor);
             for (String row : headerRows) {
                 stringBuilder.append(row);
             }
         }
-        stringBuilder.append(getSeparationLine(columnWidths));
+        stringBuilder.append(General.getSeparationLine(columnWidths));
 
         // Create body
         // Keys
-        stringBuilder.append(getLine(keys, columnWidths, maxColumnWidth));
-        stringBuilder.append(getSeparationLine(columnWidths));
+        stringBuilder.append(General.getLine(keys, columnWidths, maxColumnWidth));
+        stringBuilder.append(General.getSeparationLine(columnWidths));
         // Values
         for (T object : this.object) {
             var values = ObjectProcessor.getMapOfMethodNameAndValue(object, selectedColumns)
                     .entrySet().stream()
                     .map(Map.Entry::getValue)
-                    .toList();
+                    .collect(Collectors.toList());
 
-            stringBuilder.append(getLine(values, columnWidths, maxColumnWidth));
-            if (rowSeparators) stringBuilder.append(getSeparationLine(columnWidths));
+            stringBuilder.append(General.getLine(values, columnWidths, maxColumnWidth));
+            if (rowSeparators) stringBuilder.append(General.getSeparationLine(columnWidths));
         }
-        if (!rowSeparators) stringBuilder.append(getSeparationLine(columnWidths));
+        if (!rowSeparators) stringBuilder.append(General.getSeparationLine(columnWidths));
 
         return stringBuilder.toString();
     }

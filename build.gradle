@@ -94,12 +94,53 @@ publishing {
                 }
             }
         }
+
+//        relocation(MavenPublication) {
+//            from components.java
+//            pom {
+//                groupId = 'io.github.kamilszewc'
+//                artifactId = 'tabulator'
+//                version = '3.0'
+//
+//                name = 'Tabulator'
+//                description = 'Simple tables/lists output formater'
+//                url = 'https://github.com/kamilszewc/tabulator'
+//                licenses {
+//                    license {
+//                        name = 'The Apache License, Version 2.0'
+//                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//                    }
+//                }
+//                developers {
+//                    developer {
+//                        id = 'kszewc'
+//                        name = "Kamil Szewc"
+//                        email = 'kamil.szewc@gmail.com'
+//                    }
+//                }
+//                scm {
+//                    connection = 'scm:git:git://github.com/kamilszewc/tabulator.git'
+//                    developerConnection = 'scm:git:https://github.com/kamilszewc/tabulator.git'
+//                    url = 'https://github.com/kamilszewc/tabulator.git'
+//                }
+//
+//                distributionManagement {
+//                    relocation {
+//                        groupId = 'com.computinglaboratory'
+//                        artifactId = 'tabulator'
+//                        version = '3.0'
+//                        message = 'Project moved to com.computinglaboratory:tabulator'
+//                    }
+//                }
+//            }
+//        }
     }
 }
 
 signing {
     sign publishing.publications.mavenJava
     sign configurations.archives
+//    sign publishing.publications.relocation
 }
 
 ossIndexAudit {

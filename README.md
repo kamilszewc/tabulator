@@ -12,16 +12,16 @@ Usage with maven:
 
 ```xml
 <dependency>
-    <groupId>com.computinglaboratory</groupId>
+    <groupId>io.github.kamilszewc</groupId>
     <artifactId>tabulator</artifactId>
-    <version>3.0</version>
+    <version>3.3</version>
 </dependency>
 ```
 
 Usage with gradle:
 
 ```groovy
-implementation 'com.computinglaboratory:tabulator:3.0'
+implementation 'io.github.kamilszewc:tabulator:3.3'
 ```
 
 ## Usage
@@ -82,4 +82,4 @@ Currently, there are two types of output generators.
 ## License
 
 Apache License 2.0
-Copyright 2022 Kamil Szewc (Computing Laboratory)
+Copyright 2022 Kamil Szewc

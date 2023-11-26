@@ -1,4 +1,4 @@
-package com.computinglaboratory.tabulator.exceptions;
+package io.github.kamilszewc.tabulator.exceptions;
 
 /**
  * Exception that to be risen in the case of some errors in Tables or Cards generation

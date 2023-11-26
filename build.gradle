@@ -2,14 +2,16 @@ plugins {
     id 'java-library' // Java library
     id 'maven-publish' // To publish into github
     id 'signing' // Required by maven central
-    id 'org.sonatype.gradle.plugins.scan' version '2.5.5' // Sonatype scanner
+    id 'org.sonatype.gradle.plugins.scan' version '2.6.1' // Sonatype scanner
 }
 
-group 'com.computinglaboratory'
-version '3.2'
+group 'io.github.kamilszewc'
+version '3.3'
 
-sourceCompatibility = '10'
-targetCompatibility = '10'
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
 
 repositories {
     mavenCentral()
@@ -33,8 +35,8 @@ test {
 }
 
 compileTestJava {
-    sourceCompatibility = '15'
-    targetCompatibility = '15'
+    sourceCompatibility = JavaVersion.VERSION_15
+    targetCompatibility = JavaVersion.VERSION_15
 }
 
 java {
@@ -73,6 +75,14 @@ publishing {
                 name = 'Tabulator'
                 description = 'Simple tables/lists output formater'
                 url = 'https://github.com/kamilszewc/tabulator'
+//                distributionManagement {
+//                    relocation {
+//                        groupId = 'io.github.kamilszewc'
+//                        artifactId = 'tabulator'
+//                        version = '3.3'
+//                        message = 'Project moved to io.github.kamilszewc:tabulator'
+//                    }
+//                }
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'

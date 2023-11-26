@@ -1,7 +1,7 @@
-package com.computinglaboratory.tabulator;
+package io.github.kamilszewc.tabulator;
 
 import com.computinglaboratory.javaansitextcolorizer.Colorizer;
-import com.computinglaboratory.tabulator.exceptions.TooLongWordException;
+import io.github.kamilszewc.tabulator.exceptions.TooLongWordException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

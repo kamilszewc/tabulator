@@ -1,4 +1,4 @@
-package com.computinglaboratory.tabulator.exceptions;
+package io.github.kamilszewc.tabulator.exceptions;
 
 /**
  * Exception to be risen when given method is not implemented

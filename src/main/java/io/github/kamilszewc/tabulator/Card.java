@@ -1,7 +1,7 @@
-package com.computinglaboratory.tabulator;
+package io.github.kamilszewc.tabulator;
 
 import com.computinglaboratory.javaansitextcolorizer.Colorizer;
-import com.computinglaboratory.tabulator.exceptions.TooLongWordException;
+import io.github.kamilszewc.tabulator.exceptions.TooLongWordException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,8 +10,6 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.computinglaboratory.tabulator.General.*;
 
 /**
  * Card class representing the card-view of given class object.
@@ -77,7 +75,7 @@ public class Card<T> {
         columns.add(map.values().stream().collect(Collectors.toList()));
 
         // Get column Widths
-        List<Integer> columnWidths = getColumnWidths(columns, maxColumnWidth);
+        List<Integer> columnWidths = General.getColumnWidths(columns, maxColumnWidth);
 
         // Calculate the total width
         int width = columnWidths.stream().reduce(0, Integer::sum) + columns.size() + 1;
@@ -89,19 +87,19 @@ public class Card<T> {
             stringBuilder.append("+" + "-".repeat(width-2) + "+\n");
 
             // Actual header
-            List<String> headerRows = getHeaderRows(this.header, width, headerColor);
+            List<String> headerRows = General.getHeaderRows(this.header, width, headerColor);
             for (String row : headerRows) {
                 stringBuilder.append(row);
             }
         }
-        stringBuilder.append(getSeparationLine(columnWidths));
+        stringBuilder.append(General.getSeparationLine(columnWidths));
 
         // Create body
         for (var e : map.entrySet()) {
-            stringBuilder.append(getLine(List.of(e.getKey(), e.getValue()), columnWidths, maxColumnWidth));
-            if (rowSeparators) stringBuilder.append(getSeparationLine(columnWidths));
+            stringBuilder.append(General.getLine(List.of(e.getKey(), e.getValue()), columnWidths, maxColumnWidth));
+            if (rowSeparators) stringBuilder.append(General.getSeparationLine(columnWidths));
         }
-        if (!rowSeparators) stringBuilder.append(getSeparationLine(columnWidths));
+        if (!rowSeparators) stringBuilder.append(General.getSeparationLine(columnWidths));
 
 
         return stringBuilder.toString();

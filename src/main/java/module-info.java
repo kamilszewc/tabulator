@@ -3,7 +3,7 @@
  */
 module io.github.kamilszewc.tabulator {
     requires lombok;
-    requires com.computinglaboratory.javaansitextcolorizer;
+    requires io.github.kamilszewc.javaansitextcolorizer;
 
     exports io.github.kamilszewc.tabulator;
 }

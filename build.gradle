@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'io.github.kamilszewc'
-version '3.3'
+version '3.4'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -21,13 +21,13 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
 
-    compileOnly 'org.projectlombok:lombok:1.18.26'
-    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
-    testCompileOnly 'org.projectlombok:lombok:1.18.26'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
+    testCompileOnly 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 
-    implementation 'com.computinglaboratory:java-ansi-text-colorizer:1.1'
+    implementation 'io.github.kamilszewc:java-ansi-text-colorizer:1.4'
 }
 
 test {
@@ -75,14 +75,6 @@ publishing {
                 name = 'Tabulator'
                 description = 'Simple tables/lists output formater'
                 url = 'https://github.com/kamilszewc/tabulator'
-//                distributionManagement {
-//                    relocation {
-//                        groupId = 'io.github.kamilszewc'
-//                        artifactId = 'tabulator'
-//                        version = '3.3'
-//                        message = 'Project moved to io.github.kamilszewc:tabulator'
-//                    }
-//                }
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'

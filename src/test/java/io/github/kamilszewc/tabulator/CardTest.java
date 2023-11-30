@@ -1,6 +1,6 @@
 package io.github.kamilszewc.tabulator;
 
-import com.computinglaboratory.javaansitextcolorizer.Colorizer;
+import io.github.kamilszewc.javaansitextcolorizer.Colorizer;
 import io.github.kamilszewc.tabulator.exceptions.TooLongWordException;
 import lombok.*;
 import org.junit.jupiter.api.Assertions;

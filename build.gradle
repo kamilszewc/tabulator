@@ -2,11 +2,11 @@ plugins {
     id 'java-library' // Java library
     id 'maven-publish' // To publish into github
     id 'signing' // Required by maven central
-    id 'org.sonatype.gradle.plugins.scan' version '2.6.1' // Sonatype scanner
+    id 'org.sonatype.gradle.plugins.scan' version '2.8.3' // Sonatype scanner
 }
 
 group 'io.github.kamilszewc'
-version '3.4'
+version '3.5'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -18,14 +18,14 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.1'
 
-    compileOnly 'org.projectlombok:lombok:1.18.30'
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    compileOnly 'org.projectlombok:lombok:1.18.34'
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
 
-    testCompileOnly 'org.projectlombok:lombok:1.18.30'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+    testCompileOnly 'org.projectlombok:lombok:1.18.34'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
 
     implementation 'io.github.kamilszewc:java-ansi-text-colorizer:1.4'
 }

@@ -14,14 +14,14 @@ Usage with maven:
 <dependency>
     <groupId>io.github.kamilszewc</groupId>
     <artifactId>tabulator</artifactId>
-    <version>3.4</version>
+    <version>3.5</version>
 </dependency>
 ```
 
 Usage with gradle:
 
 ```groovy
-implementation 'io.github.kamilszewc:tabulator:3.4'
+implementation 'io.github.kamilszewc:tabulator:3.5'
 ```
 
 ## Usage

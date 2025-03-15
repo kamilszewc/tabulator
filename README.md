@@ -14,14 +14,14 @@ Usage with maven:
 <dependency>
     <groupId>io.github.kamilszewc</groupId>
     <artifactId>tabulator</artifactId>
-    <version>3.5</version>
+    <version>3.8</version>
 </dependency>
 ```
 
 Usage with gradle:
 
 ```groovy
-implementation 'io.github.kamilszewc:tabulator:3.5'
+implementation 'io.github.kamilszewc:tabulator:3.8'
 ```
 
 ## Usage
@@ -82,4 +82,4 @@ Currently, there are two types of output generators.
 ## License
 
 Apache License 2.0
-Copyright 2022-2023 Kamil Szewc
+Copyright 2022-2025 Kamil Szewc

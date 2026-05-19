@@ -8,20 +8,20 @@ Easy to use java library to represent objects as nicely formatted tables.
 
 The compiled libraries are deployed to Maven Central.
 
-Usage with maven:
+Usage with Maven:
 
 ```xml
 <dependency>
     <groupId>io.github.kamilszewc</groupId>
     <artifactId>tabulator</artifactId>
-    <version>3.8</version>
+    <version>3.9</version>
 </dependency>
 ```
 
-Usage with gradle:
+Usage with Gradle:
 
 ```groovy
-implementation 'io.github.kamilszewc:tabulator:3.8'
+implementation 'io.github.kamilszewc:tabulator:3.9'
 ```
 
 ## Usage
@@ -36,6 +36,7 @@ Currently, there are two types of output generators.
                 .object(object)
                 .maxColumnWidth(30)
                 .multiLine(true)
+                .selectedFields(List.of("first", "fourthOption", "second", "thirdOption", "time"))
                 .header("Basic class - this is very long header that needs to be multi line")
                 .getCard();
    ```

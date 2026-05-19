@@ -49,6 +49,12 @@ public class Card<T> {
     Colorizer.Color headerColor;
 
     /**
+     * Allows to select object fields to be presented in card
+     */
+    @Builder.Default
+    List<String> selectedFields = null;
+
+    /**
      * Allow/disallow multi-line entries
      */
     @Builder.Default
@@ -95,9 +101,18 @@ public class Card<T> {
         stringBuilder.append(General.getSeparationLine(columnWidths));
 
         // Create body
-        for (var e : map.entrySet()) {
-            stringBuilder.append(General.getLine(List.of(e.getKey(), e.getValue()), columnWidths, maxColumnWidth));
-            if (rowSeparators) stringBuilder.append(General.getSeparationLine(columnWidths));
+        if (selectedFields == null) {
+            for (var e : map.entrySet()) {
+                stringBuilder.append(General.getLine(List.of(e.getKey(), e.getValue()), columnWidths, maxColumnWidth));
+                if (rowSeparators) stringBuilder.append(General.getSeparationLine(columnWidths));
+            }
+
+        } else {
+            for (var key : selectedFields) {
+                var value = map.get(key);
+                stringBuilder.append(General.getLine(List.of(key, value), columnWidths, maxColumnWidth));
+                if (rowSeparators) stringBuilder.append(General.getSeparationLine(columnWidths));
+            }
         }
         if (!rowSeparators) stringBuilder.append(General.getSeparationLine(columnWidths));
 

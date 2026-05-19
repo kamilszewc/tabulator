@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.List;
 
 public class CardTest {
 
@@ -202,4 +203,31 @@ public class CardTest {
         Assertions.assertEquals(expected, card);
     }
 
+    @Test
+    public void convertingBasicClassToCardWithSelectedFields() throws TooLongWordException {
+
+        Basic basic = Basic.builder()
+                .first(1L)
+                .second("Second entry")
+                .thirdOption("Third Option")
+                .build();
+
+        String card = Card.builder()
+                .object(basic)
+                .header("Basic class")
+                .selectedFields(List.of("first", "second", "time"))
+                .getCard();
+
+        String expected = """
+                +------------------------------------+
+                |             Basic class            |
+                +--------------+---------------------+
+                | first        | 1                   |
+                | second       | Second entry        |
+                | time         | 2022-08-10T11:12:12 |
+                +--------------+---------------------+
+                """;
+
+        Assertions.assertEquals(expected, card);
+    }
 }

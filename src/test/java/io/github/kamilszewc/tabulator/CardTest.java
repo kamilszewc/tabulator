@@ -1,6 +1,7 @@
 package io.github.kamilszewc.tabulator;
 
 import io.github.kamilszewc.javaansitextcolorizer.Colorizer;
+import io.github.kamilszewc.tabulator.exceptions.EmptyCardException;
 import io.github.kamilszewc.tabulator.exceptions.TooLongWordException;
 import lombok.*;
 import org.junit.jupiter.api.Assertions;
@@ -25,7 +26,7 @@ public class CardTest {
     }
 
     @Test
-    public void convertingBasicClassToCard() throws TooLongWordException {
+    public void convertingBasicClassToCard() throws TooLongWordException, EmptyCardException {
 
         Basic basic = Basic.builder()
                 .first(1L)
@@ -54,7 +55,7 @@ public class CardTest {
     }
 
     @Test
-    public void convertingBasicClassToCardWithColorHeader() throws TooLongWordException {
+    public void convertingBasicClassToCardWithColorHeader() throws TooLongWordException, EmptyCardException {
 
         Basic basic = Basic.builder()
                 .first(1L)
@@ -85,7 +86,7 @@ public class CardTest {
     }
 
     @Test
-    public void convertingBasicClassToCardWithTooLongHeader() throws TooLongWordException {
+    public void convertingBasicClassToCardWithTooLongHeader() throws TooLongWordException, EmptyCardException {
 
         Basic basic = Basic.builder()
                 .first(1L)
@@ -135,7 +136,7 @@ public class CardTest {
     }
 
     @Test
-    public void convertingBasicClassWithMultiLineRow() throws TooLongWordException {
+    public void convertingBasicClassWithMultiLineRow() throws TooLongWordException, EmptyCardException {
 
         Basic basic = Basic.builder()
                 .first(1L)
@@ -169,7 +170,7 @@ public class CardTest {
     }
 
     @Test
-    public void convertingBasicClassWithMultiLineRowAndHeader() throws TooLongWordException {
+    public void convertingBasicClassWithMultiLineRowAndHeader() throws TooLongWordException, EmptyCardException {
 
         Basic basic = Basic.builder()
                 .first(1L)
@@ -204,7 +205,7 @@ public class CardTest {
     }
 
     @Test
-    public void convertingBasicClassToCardWithSelectedFields() throws TooLongWordException {
+    public void convertingBasicClassToCardWithSelectedFields() throws TooLongWordException, EmptyCardException {
 
         Basic basic = Basic.builder()
                 .first(1L)

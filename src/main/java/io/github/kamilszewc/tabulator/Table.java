@@ -142,7 +142,6 @@ public class Table<T> {
         return stringBuilder.toString();
     }
 
-
     /**
      * Table-builder class.
      * @param <T> Class type

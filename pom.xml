@@ -5,7 +5,7 @@
 
   <groupId>io.github.kamilszewc</groupId>
   <artifactId>tabulator</artifactId>
-  <version>4.2.1</version>
+  <version>4.2.3</version>
 
   <name>Tabulator</name>
   <description>Simple tables/lists output formater</description>
@@ -42,7 +42,7 @@
     <dependency>
       <groupId>io.github.kamilszewc</groupId>
       <artifactId>java-ansi-text-colorizer</artifactId>
-      <version>1.4</version>
+      <version>1.5</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

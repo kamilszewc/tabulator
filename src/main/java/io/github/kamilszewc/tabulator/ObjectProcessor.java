@@ -1,5 +1,6 @@
 package io.github.kamilszewc.tabulator;
 
+import java.beans.Introspector;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -38,10 +39,30 @@ class ObjectProcessor {
     }
 
     public static String extractKeyFormMethod(Method method) {
-        String name = method.getName().replaceFirst("get", "");
-        StringBuilder sb = new StringBuilder(name);
-        sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
-        return sb.toString();
+
+        String name = method.getName();
+        if (name.startsWith("get") && name.length() > 3) {
+            return Introspector.decapitalize(name.substring(3));
+        }
+        if (name.startsWith("is") && name.length() > 2) {
+            return Introspector.decapitalize(name.substring(2));
+        }
+        return name;
+
+//        String name = method.getName();
+//
+//        if (name.startsWith("get") && name.length() > 3) {
+//            String cutName = name.substring(3);
+//
+//            return Character.toLowerCase(cutName.charAt(0)) + cutName.substring(1);
+//        }
+//
+//        return name;
+
+//        String name = method.getName().replaceFirst("get", "");
+//        StringBuilder sb = new StringBuilder(name);
+//        sb.setCharAt(0, Character.toLowerCase(sb.charAt(0)));
+//        return sb.toString();
     }
 
     public static Map<String, String> getMapOfMethodNameAndValue(Object object, List<String> selectedKeys) {

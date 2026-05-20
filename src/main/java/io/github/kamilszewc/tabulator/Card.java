@@ -1,6 +1,7 @@
 package io.github.kamilszewc.tabulator;
 
 import io.github.kamilszewc.javaansitextcolorizer.Colorizer;
+import io.github.kamilszewc.tabulator.exceptions.EmptyCardException;
 import io.github.kamilszewc.tabulator.exceptions.TooLongWordException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -71,7 +72,11 @@ public class Card<T> {
      * @return card as a string
      * @throws TooLongWordException if the word in card is longer then allowed
      */
-    public String getCard() throws TooLongWordException {
+    public String getCard() throws TooLongWordException, EmptyCardException {
+
+        if (this.object == null) {
+            throw new EmptyCardException("Provided object is empty (null object)");
+        }
 
         List<List<String>> columns = new ArrayList<>();
 
@@ -137,7 +142,7 @@ public class Card<T> {
          * @return card as a string
          * @throws TooLongWordException if the word in card is longer then allowed
          */
-        public String getCard() throws TooLongWordException {
+        public String getCard() throws TooLongWordException, EmptyCardException {
             return build().getCard();
         }
     }

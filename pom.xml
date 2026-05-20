@@ -5,7 +5,7 @@
 
   <groupId>io.github.kamilszewc</groupId>
   <artifactId>tabulator</artifactId>
-  <version>4.1</version>
+  <version>4.2</version>
 
   <name>Tabulator</name>
   <description>Simple tables/lists output formater</description>

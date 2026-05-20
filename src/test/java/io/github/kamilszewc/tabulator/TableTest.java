@@ -1,6 +1,7 @@
 package io.github.kamilszewc.tabulator;
 
 import io.github.kamilszewc.javaansitextcolorizer.Colorizer;
+import io.github.kamilszewc.tabulator.exceptions.EmptyTableException;
 import io.github.kamilszewc.tabulator.exceptions.TabulatorException;
 import io.github.kamilszewc.tabulator.exceptions.TooLongWordException;
 import lombok.*;
@@ -364,5 +365,31 @@ public class TableTest {
                 """;
 
         System.out.println(table);
+    }
+
+    @Test
+    public void tableBuilderRisesExceptionWhenEmptyObjectList() {
+
+        List<Object> basics = List.of();
+
+        Assertions.assertThrowsExactly(EmptyTableException.class, () -> {
+            String table = Table.builder()
+                            .object(basics)
+                            .header("Basic class")
+                            .headerColor(Colorizer.Color.BLUE)
+                            .getTable();
+        });
+    }
+
+    @Test
+    public void tableBuilderRisesExceptionWhenNullObject() {
+
+        Assertions.assertThrowsExactly(EmptyTableException.class, () -> {
+            String table = Table.builder()
+                    .object(null)
+                    .header("Basic class")
+                    .headerColor(Colorizer.Color.BLUE)
+                    .getTable();
+        });
     }
 }

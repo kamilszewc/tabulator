@@ -41,13 +41,24 @@ class ObjectProcessor {
     public static String extractKeyFormMethod(Method method) {
 
         String name = method.getName();
+        String cutName = null;
+
         if (name.startsWith("get") && name.length() > 3) {
-            return Introspector.decapitalize(name.substring(3));
+            cutName = name.substring(3);
         }
         if (name.startsWith("is") && name.length() > 2) {
-            return Introspector.decapitalize(name.substring(2));
+            cutName = name.substring(2);
         }
-        return name;
+
+        if (cutName == null || cutName.isEmpty()) {
+            return name;
+        }
+
+        if (cutName.length() == 1) {
+            return cutName.toUpperCase();
+        }
+
+        return Character.toLowerCase(cutName.charAt(0)) + cutName.substring(1);
 
 //        String name = method.getName();
 //

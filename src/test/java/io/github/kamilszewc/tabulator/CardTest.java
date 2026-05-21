@@ -25,6 +25,7 @@ public class CardTest {
         private String fourthOption;
     }
 
+
     @Test
     public void convertingBasicClassToCard() throws TooLongWordException, EmptyCardException {
 
@@ -228,6 +229,46 @@ public class CardTest {
                 | time         | 2022-08-10T11:12:12 |
                 +--------------+---------------------+
                 """;
+
+        Assertions.assertEquals(expected, card);
+    }
+
+    @Data
+    @ToString
+    public static class Complex {
+        private Long first;
+        private String second;
+        private Boolean isSomething;
+        private String eSomething;
+    }
+
+    @Test
+    public void convertingComplexClassWithNonStandardBeanFieldNames() throws TooLongWordException, EmptyCardException {
+
+        Complex complex = new Complex();
+        complex.setFirst(1L);
+        complex.setSecond("Complex entry");
+        complex.setIsSomething(true);
+        complex.setESomething("Complex something");
+
+        String card = Card.builder()
+                .object(complex)
+                .header("Complex class")
+                .selectedFields(List.of("first", "second", "isSomething", "eSomething"))
+                .getCard();
+
+        String expected = """
+                +---------------------------------+
+                |          Complex class          |
+                +-------------+-------------------+
+                | first       | 1                 |
+                | second      | Complex entry     |
+                | isSomething | true              |
+                | eSomething  | Complex something |
+                +-------------+-------------------+
+                """;
+
+        System.out.println(card);
 
         Assertions.assertEquals(expected, card);
     }

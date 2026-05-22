@@ -80,7 +80,7 @@ public class Card<T> {
 
         List<List<String>> columns = new ArrayList<>();
 
-        var map = ObjectProcessor.getMapOfMethodNameAndValue(object);
+        var map = ObjectProcessor.getMapOfMethodNameAndValue(object, null);
 
         columns.add(map.keySet().stream().collect(Collectors.toList()));
         columns.add(map.values().stream().collect(Collectors.toList()));

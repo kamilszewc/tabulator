@@ -5,7 +5,7 @@
 
   <groupId>io.github.kamilszewc</groupId>
   <artifactId>tabulator</artifactId>
-  <version>4.2.4</version>
+  <version>4.3.0</version>
 
   <name>Tabulator</name>
   <description>Simple tables/lists output formater</description>
@@ -57,10 +57,23 @@
       <version>5.11.3</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.11.3</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
     <plugins>
+      <!-- Maven surefire plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.5.5</version>
+      </plugin>
+
       <!-- Maven lombok plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
